@@ -64,7 +64,7 @@ local default_settings = {
 		{ spell = 49361, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Stonard
 	}
 }
-DBM_SpellsUsed_Settings = {}
+DBM_SpellTimers_Settings = {}
 local settings = default_settings
 
 local L = DBM_SpellsUsed_Translations
@@ -253,7 +253,7 @@ do
 			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 
 			-- Update settings of this Addon
-			settings = DBM_SpellsUsed_Settings
+			settings = DBM_SpellTimers_Settings
 			addDefaultOptions(settings, default_settings)
 
 			-- CreateBarObject
