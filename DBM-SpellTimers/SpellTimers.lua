@@ -35,7 +35,7 @@ local default_settings = {
 	spells = {
 		{ spell = 6346, bartext = default_bartext, cooldown = 180 },	-- Priest: Fear Ward
 		{ spell = 1161, bartext = default_bartext, cooldown = 180 },	-- Warrior: Challenging Shout (AE Taunt)
-		{ spell = 871, bartext = default_bartext, cooldown = 12 },	-- Warrior: Shieldwall Duration (for Healers to see how long SW runs)
+		{ spell = 871, bartext = "%spell on %player", cooldown = 12 },	-- Warrior: Shieldwall Duration (for Healers to see how long SW runs)
 		{ spell = 34477, bartext = default_bartext, cooldown = 30 },	-- Hunter: Missdirect
 		{ spell = 20484, bartext = default_bartext, cooldown = 300 },	-- Druid: Rebirth
 		{ spell = 29166, bartext = default_bartext, cooldown = 360 },	-- Druid: Innervate
@@ -70,21 +70,6 @@ local settings = default_settings
 local L = DBM_SpellsUsed_Translations
 
 local SpellBars
-
-L.TabCategory_SpellsUsed 	= "Spell/Skill Cooldowns"
-L.AreaGeneral 			= "General Settings for Spell and Skill use Cooldowns"
-L.Enable 			= "Enable Cooldownbars"
-L.Show_LocalMessage 		= "Show local message on cast"
-L.Enable_inRaid			= "Show Cooldowns only from RaidMembers"
-L.Enable_inBattleground		= "Show Cooldowns in Battlegrounds"
-L.Enable_Portals		= "Show Portal Durations"
-L.Reset				= "reset to defaults"
-L.Local_CastMessage 		= "Detected Cast: %s"
-L.AreaAuras 			= "Setup the Spell/Skills"
-L.SpellID 			= "Spell ID"
-L.BarText 			= "Bar Text (default: %spell: %player)"
-L.Cooldown 			= "Cooldown"
-L.Error_FillUp			= "Please fillup all fields before adding an additional one"
 
 -- functions
 local addDefaultOptions
@@ -274,18 +259,21 @@ do
 				myportals = settings.portal_horde
 			end
 
-		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and select(2, ...) == "SPELL_CAST_SUCCESS" and (
-		     (settings.only_from_raid and DBM:IsInRaid()) 
-		     or (settings.active_in_pvp and (select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "arena")) ) then
+		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and select(2, ...) == "SPELL_CAST_SUCCESS" then
+			-- first some exeptions (we don't want to see any skill around the world)
+			if settings.only_from_raid and not DBM:IsInRaid() then return end
+			if settings.active_in_pvp and not (select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "arena") then return end
 
 			local fromplayer = select(4, ...)
 			local spellid = select(9, ...)
-			if settings.only_from_raid and DBM:GetRaidUnitId(name) == "none" then return end	-- filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
+
+			-- now we filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
+			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
+
 			for k,v in pairs(settings.spells) do
 				if v.spell == spellid then
 					local spellinfo, _, icon = GetSpellInfo(spellid)
-					local bartext = v.bartext:gsub("%%spell", spellinfo)
-					bartext = bartext:gsub("%%player", fromplayer)
+					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer)
 					SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
 					if settings.showlocal then
@@ -295,12 +283,12 @@ do
 			end
 
 		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and settings.show_portal and select(2, ...) == "SPELL_CREATE" then
-			if not (settings.only_from_raid and DBM:IsInRaid() and DBM:GetRaidUnitId(name) ~= "none") then
-				return -- cast from outside the raid
-			end
+			if settings.only_from_raid and not DBM:IsInRaid() then return end
 
 			local fromplayer = select(4, ...)
 			local spellid = select(9, ...)
+			
+			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
 
 			for k,v in pairs(myportals) do
 				if v.spell == spellid then
