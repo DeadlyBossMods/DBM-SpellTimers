@@ -2,7 +2,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFSpells Timers (cooldowns)|r
 ## Notes: Creates bars for Long term cooldowns or durations
 ## LoadOnDemand: 0
-## RequiredDeps: DBM-Core
+## RequiredDeps: DBM-Core, DBM-RaidLeadTools
 ## DefaultState: enabled
 ## Author: Nitram and Tandanu
 ## URL: http://www.deadlybossmods.com
