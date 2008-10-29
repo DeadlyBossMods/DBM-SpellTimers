@@ -77,7 +77,7 @@ do
 	local function creategui()
 		local createnewentry
 		local CurCount = 0
-		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_SpellsUsed, "option")
+		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_SpellsUsed, "option")
 		local generalarea = panel:CreateArea(L.AreaGeneral, nil, 150, true)
 		local auraarea = panel:CreateArea(L.AreaAuras, nil, 20, true)
 
