@@ -216,7 +216,7 @@ do
 		end
 		panel:SetMyOwnHeight()
 	end
-	DBM:RegisterOnGuiLoadCallback(creategui, 15)
+	DBM:RegisterOnGuiLoadCallback(creategui, 19)
 end
 
 
