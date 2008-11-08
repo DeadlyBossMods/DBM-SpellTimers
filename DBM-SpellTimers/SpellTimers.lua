@@ -37,7 +37,7 @@ local default_settings = {
 		{ spell = 1161, bartext = default_bartext, cooldown = 180 },	-- Warrior: Challenging Shout (AE Taunt)
 		{ spell = 871, bartext = "%spell on %player", cooldown = 12 },	-- Warrior: Shieldwall Duration (for Healers to see how long SW runs)
 		{ spell = 34477, bartext = default_bartext, cooldown = 30 },	-- Hunter: Missdirect
-		{ spell = 20484, bartext = default_bartext, cooldown = 300 },	-- Druid: Rebirth
+		{ spell = 20748, bartext = default_bartext, cooldown = 300 },	-- Druid: Rebirth (Rank 5)
 		{ spell = 29166, bartext = default_bartext, cooldown = 360 },	-- Druid: Innervate
 		{ spell = 5209, bartext = default_bartext, cooldown = 180 }, 	-- Druid: Challenging Roar (AE Taunt)
 		{ spell = 32182, bartext = default_bartext, cooldown = 600 },	-- Shaman: Heroism (alliance)
@@ -259,7 +259,7 @@ do
 				myportals = settings.portal_horde
 			end
 
-		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and select(2, ...) == "SPELL_CAST_SUCCESS" then
+		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and (select(2, ...) == "SPELL_CAST_SUCCESS" or select(2, ...) == "SPELL_RESURRECT") then
 			-- first some exeptions (we don't want to see any skill around the world)
 			if settings.only_from_raid and not DBM:IsInRaid() then return end
 			if settings.active_in_pvp and not (select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "arena") then return end
