@@ -127,7 +127,7 @@ do
 			local resetbttn = area:CreateButton(L.Reset, 140, 20)
 			resetbttn:SetPoint("TOPRIGHT", area.frame, "TOPRIGHT", -15, -15)
 			resetbttn:SetScript("OnClick", function(self)
-				table.wipe(DBM_SpellsUsed_Settings)
+				table.wipe(DBM_SpellTimers_Settings)
 				addDefaultOptions(settings, default_settings)
 				regenerate()
 				DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
