@@ -1,4 +1,4 @@
-if GetLocale() == "koKR" then
+if GetLocale() ~= "zhTW" then return end
 	local L = DBM_SpellsUsed_Translations
 
 L.TabCategory_SpellsUsed	= "주문/스킬 쿨다운"
@@ -15,4 +15,4 @@ L.SpellID 			= "Spell ID"
 L.BarText 			= "바 글자 형식(기본 : 스펠이름: %player)"
 L.Cooldown 			= "쿨다운"
 L.Error_FillUp			= "Please fill all fields before adding a new one"
-end
+
