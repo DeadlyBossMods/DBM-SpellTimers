@@ -39,7 +39,8 @@ local default_settings = {
 		{ spell = 1161, bartext = default_bartext, cooldown = 180 },	-- Warrior: Challenging Shout (AE Taunt)
 		{ spell = 871, bartext = "%spell on %player", cooldown = 12 },	-- Warrior: Shieldwall Duration (for Healers to see how long SW runs)
 		{ spell = 34477, bartext = default_bartext, cooldown = 30 },	-- Hunter: Missdirect
-		{ spell = 20748, bartext = default_bartext, cooldown = 1200 },	-- Druid: Rebirth (Rank 5)
+--		{ spell = 20748, bartext = default_bartext, cooldown = 1200 },	-- Druid: Rebirth (Rank 5)
+		{ spell = 48477, bartext = default_bartext, cooldown = 1200 },	-- Druid: Rebirth (Rank 7)
 		{ spell = 29166, bartext = default_bartext, cooldown = 360 },	-- Druid: Innervate
 		{ spell = 5209, bartext = default_bartext, cooldown = 180 }, 	-- Druid: Challenging Roar (AE Taunt)
 		{ spell = 32182, bartext = default_bartext, cooldown = 600 },	-- Shaman: Heroism (alliance)
