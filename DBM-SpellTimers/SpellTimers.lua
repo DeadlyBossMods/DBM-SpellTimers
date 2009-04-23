@@ -44,8 +44,8 @@ local default_settings = {
 		{ spell = 48477, bartext = default_bartext, cooldown = 1200 },	-- Druid: Rebirth (Rank 7)
 		{ spell = 29166, bartext = default_bartext, cooldown = 360 },	-- Druid: Innervate
 		{ spell = 5209, bartext = default_bartext, cooldown = 180 }, 	-- Druid: Challenging Roar (AE Taunt)
-		{ spell = 32182, bartext = default_bartext, cooldown = 600 },	-- Shaman: Heroism (alliance)
-		{ spell = 2825, bartext = default_bartext, cooldown = 600 },	-- Shaman: Bloodlust (horde)
+		{ spell = 32182, bartext = default_bartext, cooldown = 300 },	-- Shaman: Heroism (alliance)
+		{ spell = 2825, bartext = default_bartext, cooldown = 300 },	-- Shaman: Bloodlust (horde)
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
 		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
 		{ spell = 57934, bartext = default_bartext, cooldown = 30 },	-- Tricks of the Trade
