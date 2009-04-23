@@ -137,6 +137,9 @@ do
 				regenerate()
 				DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 			end)
+
+			local version = area:CreateText("r"..Revision, nil, nil, GameFontDisableSmall, "RIGHT")
+			version:SetPoint("BOTTOMRIGHT", area.frame, "BOTTOMRIGHT", -5, 5)
 		end
 		do
 			local function onchange_spell(field)
