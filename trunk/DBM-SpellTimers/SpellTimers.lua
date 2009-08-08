@@ -43,7 +43,7 @@ local default_settings = {
 		{ spell = 871, bartext = "%spell on %player", cooldown = 12 },		-- Warrior: Shieldwall Duration (for Healers to see how long SW runs)
 		{ spell = 34477, bartext = default_bartext, cooldown = 30 },		-- Hunter: Missdirect
 		{ spell = 48477, bartext = default_bartextwtarget, cooldown = 1200 },	-- Druid: Rebirth (Rank 7)	Changed by Florin Patan
-		{ spell = 29166, bartext = default_bartextwtarget, cooldown = 360 },	-- Druid: Innervate		Changed by Florin Patan
+		{ spell = 29166, bartext = default_bartextwtarget, cooldown = 180 },	-- Druid: Innervate
 		{ spell = 5209, bartext = default_bartext, cooldown = 180 }, 		-- Druid: Challenging Roar (AE Taunt)
 		{ spell = 32182, bartext = default_bartext, cooldown = 300 },		-- Shaman: Heroism (alliance)
 		{ spell = 2825, bartext = default_bartext, cooldown = 300 },		-- Shaman: Bloodlust (horde)
