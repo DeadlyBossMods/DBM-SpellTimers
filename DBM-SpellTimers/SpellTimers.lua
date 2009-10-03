@@ -13,7 +13,6 @@
 --    * zhCN: yleaf(yaroot@gmail.com)
 --    * zhTW: yleaf(yaroot@gmail.com)/Juha
 --    * koKR: BlueNyx(bluenyx@gmail.com)
---    * esES: Interplay/1nn7erpLaY       http://www.1nn7erpLaY.com
 --
 -- 
 -- This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
@@ -30,7 +29,6 @@
 local Revision = ("$Revision$"):sub(12, -3)
 
 local default_bartext = "%spell: %player"
-local default_bartextwtarget = "%spell: %player on %target"	-- Added by Florin Patan
 local default_settings = {
 	enabled = true,
 	showlocal = true,
@@ -39,19 +37,24 @@ local default_settings = {
 	own_bargroup = false,
 	show_portal = true,
 	spells = {
-		{ spell = 6346, bartext = default_bartext, cooldown = 180 },		-- Priest: Fear Ward
-		{ spell = 1161, bartext = default_bartext, cooldown = 180 },		-- Warrior: Challenging Shout (AE Taunt)
-		{ spell = 871, bartext = "%spell on %player", cooldown = 12 },		-- Warrior: Shieldwall Duration (for Healers to see how long SW runs)
-		{ spell = 34477, bartext = default_bartext, cooldown = 30 },		-- Hunter: Missdirect
-		{ spell = 48477, bartext = default_bartextwtarget, cooldown = 1200 },	-- Druid: Rebirth (Rank 7)	Changed by Florin Patan
-		{ spell = 29166, bartext = default_bartextwtarget, cooldown = 180 },	-- Druid: Innervate
-		{ spell = 5209, bartext = default_bartext, cooldown = 180 }, 		-- Druid: Challenging Roar (AE Taunt)
-		{ spell = 32182, bartext = default_bartext, cooldown = 300 },		-- Shaman: Heroism (alliance)
-		{ spell = 2825, bartext = default_bartext, cooldown = 300 },		-- Shaman: Bloodlust (horde)
-		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 		-- Field Repair Bot 74A
-		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 		-- Field Repair Bot 110G
-		{ spell = 57934, bartext = default_bartext, cooldown = 30 },		-- Tricks of the Trade
-
+		{ spell = 6346, bartext = default_bartext, cooldown = 180 },	-- Priest: Fear Ward
+		{ spell = 1161, bartext = default_bartext, cooldown = 180 },	-- Warrior: Challenging Shout (AE Taunt)
+		{ spell = 871, bartext = "%spell on %player", cooldown = 12 },	-- Warrior: Shieldwall Duration (for Healers to see how long cooldown runs)
+		{ spell = 12975, bartext = "%spell on %player", cooldown = 20 },-- Warrior: Last Stand Duration (for Healers to see how long cooldown runs)
+		{ spell = 48792, bartext = "%spell on %player", cooldown = 12 },-- Death Knight: Icebound Fortitude Duration (for Healers to see how long cooldown runs)
+		{ spell = 498, bartext = "%spell on %player", cooldown = 12 },	-- Paladin: Divine Protection Duration (for Healers to see how long cooldown runs)
+		{ spell = 61336, bartext = "%spell on %player", cooldown = 20 },-- Druid: Survival Instincts Duration (for Healers to see how long cooldown runs)
+		{ spell = 48477, bartext = default_bartext, cooldown = 1200 },	-- Druid: Rebirth (Rank 7)
+		{ spell = 29166, bartext = default_bartext, cooldown = 180 },	-- Druid: Innervate
+		{ spell = 5209, bartext = default_bartext, cooldown = 180 }, 	-- Druid: Challenging Roar (AE Taunt)
+		{ spell = 34477, bartext = default_bartext, cooldown = 30 },	-- Hunter: Missdirect
+		{ spell = 57934, bartext = default_bartext, cooldown = 30 },	-- Tricks of the Trade
+		{ spell = 32182, bartext = default_bartext, cooldown = 300 },	-- Shaman: Heroism (alliance)
+		{ spell = 2825, bartext = default_bartext, cooldown = 300 },	-- Shaman: Bloodlust (horde)
+		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
+		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
+		{ spell = 55252, bartext = default_bartext, cooldown = 600 }, 	-- Scrapbot Construction Kit
+		{ spell = 68067, bartext = default_bartext, cooldown = 600 }, 	-- Jeeves
 	},
 	portal_alliance = {
 		{ spell = 53142, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dalaran
@@ -276,7 +279,6 @@ do
 			if not settings.active_in_pvp and (select(2, IsInInstance()) == "pvp") then return end
 
 			local fromplayer = select(4, ...)
-			local toplayer = select(7, ...)		-- Added by Florin Patan
 			local spellid = select(9, ...)
 
 			-- now we filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
@@ -285,7 +287,7 @@ do
 			for k,v in pairs(settings.spells) do
 				if v.spell == spellid then
 					local spellinfo, _, icon = GetSpellInfo(spellid)
-					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
+					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer)
 					SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
 					if settings.showlocal then
@@ -298,7 +300,6 @@ do
 			if settings.only_from_raid and not DBM:IsInRaid() then return end
 
 			local fromplayer = select(4, ...)
-			local toplayer = select(7, ...)		-- Added by Florin Patan
 			local spellid = select(9, ...)
 			
 			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
@@ -306,7 +307,8 @@ do
 			for k,v in pairs(myportals) do
 				if v.spell == spellid then
 					local spellinfo, _, icon = GetSpellInfo(spellid)
-					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
+					local bartext = v.bartext:gsub("%%spell", spellinfo)
+					bartext = bartext:gsub("%%player", fromplayer)
 					SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
 					if settings.showlocal then
@@ -318,5 +320,4 @@ do
 	end)
 	mainframe:RegisterEvent("ADDON_LOADED")
 end
-
 
