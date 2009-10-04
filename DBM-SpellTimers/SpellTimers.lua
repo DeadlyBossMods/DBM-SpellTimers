@@ -324,4 +324,3 @@ do
 	mainframe:RegisterEvent("ADDON_LOADED")
 end
 
-
