@@ -57,8 +57,8 @@ local default_settings = {
 		{ spell = 2825, bartext = default_bartext, cooldown = 300 },	-- Shaman: Bloodlust (horde)
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
 		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
-		{ spell = 55252, bartext = default_bartext, cooldown = 600 }, 	-- Scrapbot Construction Kit
-		{ spell = 68067, bartext = default_bartext, cooldown = 600 }, 	-- Jeeves
+		{ spell = 54711, bartext = default_bartext, cooldown = 300 }, 	-- Scrapbot Construction Kit
+		{ spell = 67826, bartext = default_bartext, cooldown = 600 }, 	-- Jeeves
 
 	},
 	portal_alliance = {
