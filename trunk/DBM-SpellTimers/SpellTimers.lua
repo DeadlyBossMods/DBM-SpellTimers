@@ -279,7 +279,7 @@ do
 				myportals = settings.portal_horde
 			end
 
-		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and (select(2, ...) == "SPELL_CAST_SUCCESS" or select(2, ...) == "SPELL_RESURRECT") then
+		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and (select(2, ...) == "SPELL_CAST_SUCCESS" or select(2, ...) == "SPELL_RESURRECT" or select(2, ...) == "SPELL_AURA_APPLIED") then
 			-- first some exeptions (we don't want to see any skill around the world)
 			if settings.only_from_raid and not DBM:IsInRaid() then return end
 			if not settings.active_in_pvp and (select(2, IsInInstance()) == "pvp") then return end
