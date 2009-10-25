@@ -48,13 +48,14 @@ local default_settings = {
 		{ spell = 48477, bartext = default_bartext, cooldown = 1200 },	-- Druid: Rebirth (Rank 7)
 		{ spell = 29166, bartext = default_bartext, cooldown = 180 },	-- Druid: Innervate
 		{ spell = 5209, bartext = default_bartext, cooldown = 180 }, 	-- Druid: Challenging Roar (AE Taunt)
-		{ spell = 33206, bartext = "%spell on %player", cooldown = 8 },-- Priest: Pain Suppression Duration (for Healers to see how long cooldown runs)
-		{ spell = 6940, bartext = "%spell on %player", cooldown = 12 },-- Paladin: Hand of Sacrifice Duration (for Healers to see how long cooldown runs)
-		{ spell = 64205, bartext = "%spell on %player", cooldown = 10 },-- Paladin: Divine Sacrifice Duration (for Healers to see how long cooldown runs)
+		{ spell = 33206, bartext = "%spell on %target", cooldown = 8 }, -- Priest: Pain Suppression Duration (for Healers to see how long cooldown runs)
+		{ spell = 6940, bartext = "%spell on %target", cooldown = 12 }, -- Paladin: Hand of Sacrifice Duration (for Healers to see how long cooldown runs)
+		{ spell = 64205, bartext = default_bartext, cooldown = 10 },	-- Paladin: Divine Sacrifice Duration (for Healers to see how long cooldown runs)
 		{ spell = 34477, bartext = default_bartext, cooldown = 30 },	-- Hunter: Missdirect
 		{ spell = 57934, bartext = default_bartext, cooldown = 30 },	-- Tricks of the Trade
 		{ spell = 32182, bartext = default_bartext, cooldown = 300 },	-- Shaman: Heroism (alliance)
 		{ spell = 2825, bartext = default_bartext, cooldown = 300 },	-- Shaman: Bloodlust (horde)
+		{ spell = 20608, bartext = default_bartext, cooldown = 3600 },	-- Shaman: Reincarnation
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
 		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
 		{ spell = 54711, bartext = default_bartext, cooldown = 300 }, 	-- Scrapbot Construction Kit
