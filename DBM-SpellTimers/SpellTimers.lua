@@ -252,6 +252,7 @@ do
 	end
 
 	local myportals = {}
+	local lastmsg = "";
 	local mainframe = CreateFrame("frame", "DBM_SpellTimers", UIParent)
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-SpellTimers" then
@@ -279,7 +280,8 @@ do
 				myportals = settings.portal_horde
 			end
 
-		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and (select(2, ...) == "SPELL_CAST_SUCCESS" or select(2, ...) == "SPELL_RESURRECT" or select(2, ...) == "SPELL_AURA_APPLIED") then
+		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and (select(2, ...) == "SPELL_CAST_SUCCESS" or select(2, ...) == "SPELL_RESURRECT" 
+																			 or select(2, ...) == "SPELL_AURA_APPLIED" or select(2, ...) == "SPELL_AURA_REFRESH") then
 			-- first some exeptions (we don't want to see any skill around the world)
 			if settings.only_from_raid and not DBM:IsInRaid() then return end
 			if not settings.active_in_pvp and (select(2, IsInInstance()) == "pvp") then return end
@@ -298,7 +300,11 @@ do
 					SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
 					if settings.showlocal then
-						DBM:AddMsg( L.Local_CastMessage:format(bartext) )
+						local msg =  L.Local_CastMessage:format(bartext)
+						if not lastmsg or lastmsg ~= msg then
+							DBM:AddMsg(msg)
+							lastmsg = msg
+						end
 					end
 				end
 			end
