@@ -146,6 +146,11 @@ do
 			resetbttn:SetScript("OnClick", function(self)
 				table.wipe(DBM_SpellTimers_Settings)
 				addDefaultOptions(settings, default_settings)
+				for k,v in pairs(settings.spells) do
+					if v.enabled == nil then
+						v.enabled = true
+					end
+				end
 				regenerate()
 				DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 			end)
@@ -159,6 +164,8 @@ do
 					settings.spells[self.guikey] = settings.spells[self.guikey] or {}
 					if field == "spell" or field == "cooldown" then
 						settings.spells[self.guikey][field] = self:GetNumber()
+					elseif field == "enabled" then
+						settings.spells[self.guikey].enabled = not not self:GetChecked()
 					else
 						settings.spells[self.guikey][field] = self:GetText()
 					end
@@ -171,6 +178,8 @@ do
 						local text = settings.spells[self.guikey][field] or ""
 						local spellinfo = GetSpellInfo(settings.spells[self.guikey].spell)
 						self:SetText( text:gsub("%%spell", spellinfo) )
+					elseif field == "enabled" then
+						self:SetChecked( settings.spells[self.guikey].enabled ) 
 					else
 						self:SetText( settings.spells[self.guikey][field] or "" )
 					end
@@ -193,19 +202,25 @@ do
 				spellid:SetScript("OnTextChanged", onchange_spell("spell"))
 				spellid:SetScript("OnShow", onshow_spell("spell"))
 				spellid:SetNumeric(true)
-	
+
 				local bartext = area:CreateEditBox(L.BarText, "", 190)
 				bartext.guikey = CurCount
 				bartext:SetPoint('TOPLEFT', spellid, "TOPRIGHT", 20, 0)
 				bartext:SetScript("OnTextChanged", onchange_spell("bartext"))
 				bartext:SetScript("OnShow", onshow_spell("bartext"))
 
-				local cooldown = area:CreateEditBox(L.Cooldown, "", 65)
+				local cooldown = area:CreateEditBox(L.Cooldown, "", 45)
 				cooldown.guikey = CurCount
 				cooldown:SetPoint("TOPLEFT", bartext, "TOPRIGHT", 20, 0)
 				cooldown:SetScript("OnTextChanged", onchange_spell("cooldown"))
 				cooldown:SetScript("OnShow", onshow_spell("cooldown"))
 				cooldown:SetNumeric(true)
+
+				local enableit = area:CreateCheckButton("")
+				enableit.guikey = CurCount
+				enableit:SetScript("OnShow", onshow_spell("enabled"))
+				enableit:SetScript("OnClick", onchange_spell("enabled"))				
+				enableit:SetPoint("LEFT", cooldown, "RIGHT", 5, 0)
 
 				getadditionalid:ClearAllPoints()
 				getadditionalid:SetPoint("RIGHT", spellid, "LEFT", -15, 0)
@@ -280,6 +295,12 @@ do
 				myportals = settings.portal_horde
 			end
 
+			for k,v in pairs(settings.spells) do
+				if v.enabled == nil then
+					v.enabled = true
+				end
+			end
+
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and (select(2, ...) == "SPELL_CAST_SUCCESS" or select(2, ...) == "SPELL_RESURRECT" 
 																			 or select(2, ...) == "SPELL_AURA_APPLIED" or select(2, ...) == "SPELL_AURA_REFRESH") then
 			-- first some exeptions (we don't want to see any skill around the world)
@@ -294,7 +315,7 @@ do
 			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
 
 			for k,v in pairs(settings.spells) do
-				if v.spell == spellid then
+				if v.spell == spellid and v.enabled == true then
 					local spellinfo, _, icon = GetSpellInfo(spellid)
 					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
 					SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
