@@ -301,7 +301,7 @@ do
 				end
 			end
 
-		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and (select(2, ...) == "SPELL_CAST_SUCCESS" or select(2, ...) == "SPELL_RESURRECT" 
+		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and (select(2, ...) == "SPELL_CAST_SUCCESS" or select(2, ...) == "SPELL_RESURRECT" or select(2, ...) == "SPELL_HEAL"
 																			 or select(2, ...) == "SPELL_AURA_APPLIED" or select(2, ...) == "SPELL_AURA_REFRESH") then
 			-- first some exeptions (we don't want to see any skill around the world)
 			if settings.only_from_raid and not DBM:IsInRaid() then return end
