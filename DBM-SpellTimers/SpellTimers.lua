@@ -177,7 +177,11 @@ do
 					if field == "bartext" and settings.spells[self.guikey].spell and settings.spells[self.guikey].spell > 0 then
 						local text = settings.spells[self.guikey][field] or ""
 						local spellinfo = GetSpellInfo(settings.spells[self.guikey].spell)
-						self:SetText( text:gsub("%%spell", spellinfo) )
+						if spellinfo == nil then
+							DBM:AddMsg("Illegal SpellID found. Please remove the Spell "..settings.spells[self.guikey].spell.." from your DBM Options GUI (spelltimers)");
+						else
+							self:SetText( string.gsub(text, "%%spell", spellinfo) )
+						end
 					elseif field == "enabled" then
 						self:SetChecked( settings.spells[self.guikey].enabled ) 
 					else
