@@ -87,6 +87,16 @@ local settings = default_settings
 local L = DBM_SpellsUsed_Translations
 
 local SpellBars
+local SpellBarIndex = {}
+local SpellIDIndex = {}
+local function rebuildSpellIDIndex()
+  SpellIDIndex = {}
+	for k,v in pairs(settings.spells) do
+	  if v.spell then
+	    SpellIDIndex[v.spell] = k
+	  end
+	end
+end
 
 -- functions
 local addDefaultOptions
@@ -162,8 +172,11 @@ do
 			local function onchange_spell(field)
 				return function(self)
 					settings.spells[self.guikey] = settings.spells[self.guikey] or {}
-					if field == "spell" or field == "cooldown" then
+					if field == "spell" then
 						settings.spells[self.guikey][field] = self:GetNumber()
+						rebuildSpellIDIndex()
+					elseif field == "cooldown" then
+						settings.spells[self.guikey][field] = self:GetNumber()					
 					elseif field == "enabled" then
 						settings.spells[self.guikey].enabled = not not self:GetChecked()
 					else
@@ -269,13 +282,28 @@ do
 			end
 		end
 	end
+	
+	function clearAllSpellBars() 
+  	for k,v in pairs(SpellBarIndex) do
+  	   SpellBars:CancelBar(k)
+  	   SpellBarIndex[k] = nil
+  	end	
+	end
 
 	local myportals = {}
 	local lastmsg = "";
 	local mainframe = CreateFrame("frame", "DBM_SpellTimers", UIParent)
+	local spellEvents = {
+	  ["SPELL_CAST_SUCCESS"] = true,
+	  ["SPELL_RESURRECT"] = true,
+	  ["SPELL_HEAL"] = true,
+	  ["SPELL_AURA_APPLIED"] = true,
+	  ["SPELL_AURA_REFRESH"] = true,
+	}
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-SpellTimers" then
 			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+			self:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND")
 
 			-- Update settings of this Addon
 			settings = DBM_SpellTimers_Settings
@@ -304,9 +332,10 @@ do
 					v.enabled = true
 				end
 			end
+			
+			rebuildSpellIDIndex()
 
-		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and (select(2, ...) == "SPELL_CAST_SUCCESS" or select(2, ...) == "SPELL_RESURRECT" or select(2, ...) == "SPELL_HEAL"
-																			 or select(2, ...) == "SPELL_AURA_APPLIED" or select(2, ...) == "SPELL_CAST_START" or select(2, ...) == "SPELL_AURA_REFRESH") then
+		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and spellEvents[select(2, ...)] then
 			-- first some exeptions (we don't want to see any skill around the world)
 			if settings.only_from_raid and not DBM:IsInRaid() then return end
 			if not settings.active_in_pvp and (select(2, IsInInstance()) == "pvp") then return end
@@ -318,11 +347,15 @@ do
 			-- now we filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
 			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
 
-			for k,v in pairs(settings.spells) do
-				if v.spell == spellid and v.enabled == true then
+      guikey = SpellIDIndex[spellid]
+      v = (guikey and settings.spells[guikey])
+      if v and v.enabled == true then
+          if v.spell ~= spellid then
+            print("DBM-SpellTimers Index mismatch error! "..guikey.." "..spellid)
+          end
 					local spellinfo, _, icon = GetSpellInfo(spellid)
 					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
-					SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
+					SpellBarIndex[bartext] = SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
 					if settings.showlocal then
 						local msg =  L.Local_CastMessage:format(bartext)
@@ -331,7 +364,6 @@ do
 							lastmsg = msg
 						end
 					end
-				end
 			end
 
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and settings.show_portal and select(2, ...) == "SPELL_CREATE" then
@@ -347,13 +379,16 @@ do
 				if v.spell == spellid then
 					local spellinfo, _, icon = GetSpellInfo(spellid)
 					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
-					SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
+					SpellBarIndex[bartext] = SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
 					if settings.showlocal then
 						DBM:AddMsg( L.Local_CastMessage:format(bartext) )
 					end
 				end
 			end
+		elseif settings.enabled and event == "PLAYER_ENTERING_BATTLEGROUND" then
+		  -- spell cooldowns all reset on entering an arena or bg
+		  clearAllSpellBars() 
 		end
 	end)
 	mainframe:RegisterEvent("ADDON_LOADED")
