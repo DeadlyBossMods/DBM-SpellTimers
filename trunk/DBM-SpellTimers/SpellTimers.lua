@@ -28,7 +28,6 @@
 
 local Revision = ("$Revision$"):sub(12, -3)
 
-local is_cata = select(4, _G.GetBuildInfo()) >= 40000--4.0.1 or Beta
 local default_bartext = "%spell: %player"
 local default_bartextwtarget = "%spell: %player on %target"	-- Added by Florin Patan
 local default_settings = {
@@ -46,11 +45,8 @@ local default_settings = {
 		{ spell = 48792, bartext = "%spell on %player", cooldown = 12 },-- Death Knight: Icebound Fortitude Duration (for Healers to see how long cooldown runs)
 		{ spell = 498, bartext = "%spell on %player", cooldown = 12 },	-- Paladin: Divine Protection Duration (for Healers to see how long cooldown runs)
 		{ spell = 61336, bartext = "%spell on %player", cooldown = 20 },-- Druid: Survival Instincts Duration (for Healers to see how long cooldown runs)
-		if is_cata then
-		{ spell = 20484 and is_cata or 48477, bartext = default_bartext, cooldown = 600 },	-- Druid: Rebirth
-	--[[	else
+		{ spell = 20484, bartext = default_bartext, cooldown = 600 },	-- Druid: Rebirth
 		{ spell = 48477, bartext = default_bartext, cooldown = 600 },	-- Druid: Rebirth (Rank 7)
-		end--]]
 		{ spell = 29166, bartext = default_bartext, cooldown = 180 },	-- Druid: Innervate
 		{ spell = 5209, bartext = default_bartext, cooldown = 180 }, 	-- Druid: Challenging Roar (AE Taunt)
 		{ spell = 33206, bartext = "%spell on %target", cooldown = 8 }, -- Priest: Pain Suppression Duration (for Healers to see how long cooldown runs)
@@ -58,9 +54,7 @@ local default_settings = {
 		{ spell = 64205, bartext = default_bartext, cooldown = 10 },	-- Paladin: Divine Sacrifice Duration (for Healers to see how long cooldown runs)
 		{ spell = 34477, bartext = default_bartext, cooldown = 30 },	-- Hunter: Missdirect
 		{ spell = 57934, bartext = default_bartext, cooldown = 30 },	-- Rogue: Tricks of the Trade
-	--[[	if is_cata then
 		{ spell = 80353, bartext = default_bartext, cooldown = 300 },	-- Mage: TimeWarp
-		end--]]
 		{ spell = 32182, bartext = default_bartext, cooldown = 300 },	-- Shaman: Heroism (alliance)
 		{ spell = 2825, bartext = default_bartext, cooldown = 300 },	-- Shaman: Bloodlust (horde)
 		{ spell = 20608, bartext = default_bartext, cooldown = 1800 },	-- Shaman: Reincarnation
