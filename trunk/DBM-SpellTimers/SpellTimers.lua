@@ -358,6 +358,9 @@ do
             print("DBM-SpellTimers Index mismatch error! "..guikey.." "..spellid)
           end
 					local spellinfo, _, icon = GetSpellInfo(spellid)
+                                        spellinfo = spellinfo or "UNKNOWN SPELL"
+                                        fromplayer = fromplayer or "UNKNOWN SOURCE"
+                                        toplayer = toplayer or "UNKNOWN TARGET"
 					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
 					SpellBarIndex[bartext] = SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
