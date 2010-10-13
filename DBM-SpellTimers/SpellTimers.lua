@@ -332,6 +332,9 @@ do
 				if v.enabled == nil then
 					v.enabled = true
 				end
+				if v.spell == 48477 then -- upgrade legacy spellIds
+					v.spell = 20484
+				end
 			end
 			
 			rebuildSpellIDIndex()
