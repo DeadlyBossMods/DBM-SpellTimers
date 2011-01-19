@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 local L = DBM_SpellsUsed_Translations
 
 -- Initial translation by ckeurk
