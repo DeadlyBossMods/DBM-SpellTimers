@@ -71,6 +71,7 @@ local default_settings = {
 		{ spell = 49360, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Theramore
 		{ spell = 11419, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Darnassus
 		{ spell = 32266, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Exodar
+		{ spell = 88345, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Tol Barad
 	},
 	portal_horde = {
 		{ spell = 53142, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dalaran
@@ -80,6 +81,7 @@ local default_settings = {
 		{ spell = 11420, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Thunder Bluff
 		{ spell = 32667, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Silvermoon
 		{ spell = 49361, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Stonard
+		{ spell = 88346, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Tol Barad
 	}
 }
 DBM_SpellTimers_Settings = {}
