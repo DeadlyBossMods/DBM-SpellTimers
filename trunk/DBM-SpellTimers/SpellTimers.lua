@@ -280,17 +280,17 @@ do
 		for i, v in pairs(t2) do
 			if t1[i] == nil then
 				t1[i] = v
-			elseif type(v) == "table" then
-				addDefaultOptions(v, t2[i])
+			elseif type(v) == "table" and type(t1[i]) == "table" then
+				addDefaultOptions(t1[i], v)
 			end
 		end
 	end
 	
 	function clearAllSpellBars() 
-  	for k,v in pairs(SpellBarIndex) do
-  	   SpellBars:CancelBar(k)
-  	   SpellBarIndex[k] = nil
-  	end	
+		for k,v in pairs(SpellBarIndex) do
+		   SpellBars:CancelBar(k)
+		   SpellBarIndex[k] = nil
+		end	
 	end
 
 	local myportals = {}
