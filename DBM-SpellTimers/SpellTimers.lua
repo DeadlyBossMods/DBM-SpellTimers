@@ -12,7 +12,7 @@
 --    * deDE: Nitram/Tandanu             http://www.deadlybossmods.com
 --    * zhCN: yleaf(yaroot@gmail.com)
 --    * zhTW: yleaf(yaroot@gmail.com)/Juha
---    * koKR: BlueNyx(bluenyx@gmail.com)
+--    * koKR: BlueNyx(bluenyx@gmail.com)/nBlueWiz(everfinale@gmail.com)
 --    * esES: Interplay/1nn7erpLaY       http://www.1nn7erpLaY.com
 --
 -- This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
