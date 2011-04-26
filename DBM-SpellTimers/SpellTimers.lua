@@ -379,9 +379,9 @@ do
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and settings.show_portal and select(2, ...) == "SPELL_CREATE" then
 			if settings.only_from_raid and not DBM:IsInRaid() then return end
 
-			local fromplayer = select(4, ...)
-			local toplayer = select(7, ...)		-- Added by Florin Patan
-			local spellid = select(9, ...)
+			local fromplayer = select(5, ...)
+			local toplayer = select(8, ...)		-- Added by Florin Patan
+			local spellid = select(10, ...)
 			
 			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
 
