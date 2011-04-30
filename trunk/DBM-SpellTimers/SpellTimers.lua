@@ -59,7 +59,7 @@ local default_settings = {
 		{ spell = 32182, bartext = default_bartext, cooldown = 300 },	-- Shaman: Heroism (alliance)
 		{ spell = 2825, bartext = default_bartext, cooldown = 300 },	-- Shaman: Bloodlust (horde)
 		{ spell = 20608, bartext = default_bartext, cooldown = 1800 },	-- Shaman: Reincarnation
-		{ spell = 20707, bartext = default_bartext, cooldown = 900 },	-- Warlock: Soulstone Resurrection
+		{ spell = 95750, bartext = default_bartext, cooldown = 900 },	-- Warlock: Soulstone Resurrection
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
 		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
 		{ spell = 54711, bartext = default_bartext, cooldown = 300 }, 	-- Scrapbot Construction Kit
