@@ -43,7 +43,7 @@ local default_settings = {
 		{ spell = 61336, bartext = "%spell on %player", cooldown = 12 },-- Druid: Survival Instincts Duration (for Healers/Tanks to see how long cooldown runs)
 		{ spell = 20484, bartext = default_bartext, cooldown = 600 },	-- Druid: Rebirth
 		{ spell = 29166, bartext = default_bartext, cooldown = 180 },	-- Druid: Innervate
-		{ spell = 740, bartext = default_bartext, cooldown = 480 }, 	-- Druid: Tranquility
+--		{ spell = 740, bartext = default_bartext, cooldown = 480 }, 	-- Druid: Tranquility (3 min for resto, not sure how to detect if it was cast by specced player or not without complex inspecting :\)
 		{ spell = 34477, bartext = default_bartext, cooldown = 30 },	-- Hunter: Misdirect
 		{ spell = 80353, bartext = default_bartext, cooldown = 300 },	-- Mage: Time Warp
 		{ spell = 6940, bartext = "%spell on %target", cooldown = 12 }, -- Paladin: Hand of Sacrifice Duration (for Healers/Tanks to see how long cooldown runs)
