@@ -355,8 +355,8 @@ do
 			if not settings.active_in_pvp and (select(2, IsInInstance()) == "pvp") then return end
 
 			local fromplayer = select(5, ...)
-			local toplayer = select(8, ...)		-- Added by Florin Patan
-			local spellid = select(10, ...)
+			local toplayer = select(9, ...)		-- Added by Florin Patan
+			local spellid = select(12, ...)
 
 			-- now we filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
 			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
@@ -387,8 +387,8 @@ do
 			if settings.only_from_raid and not DBM:IsInRaid() then return end
 
 			local fromplayer = select(5, ...)
-			local toplayer = select(8, ...)		-- Added by Florin Patan
-			local spellid = select(10, ...)
+			local toplayer = select(9, ...)		-- Added by Florin Patan
+			local spellid = select(12, ...)
 			
 			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
 
