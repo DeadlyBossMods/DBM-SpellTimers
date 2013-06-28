@@ -40,24 +40,24 @@ local default_settings = {
 	spells = {
 		{ spell = 48792, bartext = "%spell on %player", cooldown = 12 },-- Death Knight: Icebound Fortitude Duration (for Healers/Tanks to see how long cooldown runs)
 		{ spell = 61336, bartext = "%spell on %player", cooldown = 12 },-- Druid: Survival Instincts Duration (for Healers/Tanks to see how long cooldown runs)
-		{ spell = 29166, bartext = default_bartext, cooldown = 180 },	-- Druid: Innervate
+		{ spell = 29166, bartext = default_bartext, cooldown = 180, resetOnWipe = true },	-- Druid: Innervate
 		{ spell = 6940, bartext = "%spell on %target", cooldown = 12 }, -- Paladin: Hand of Sacrifice Duration (for Healers/Tanks to see how long cooldown runs)
 		{ spell = 498, bartext = "%spell on %player", cooldown = 10 },	-- Paladin: Divine Protection Duration (for Healers/Tanks to see how long cooldown runs)
 		{ spell = 31850, bartext = "%spell on %player", cooldown = 10 },-- Paladin: Argent Defender Duration (for Healers/Tanks to see how long cooldown runs)
 		{ spell = 86659, bartext = "%spell on %player", cooldown = 12 },-- Paladin: Guardian of Ancient Kings (for Healers/Tanks to see how long cooldown runs)
-		{ spell = 31821, bartext = default_bartext, cooldown = 180 },	-- Paladin: Devotion Aura
-		{ spell = 6346, bartext = default_bartext, cooldown = 180 },	-- Priest: Fear Ward
+		{ spell = 31821, bartext = default_bartext, cooldown = 180, resetOnWipe = true  },	-- Paladin: Devotion Aura
+		{ spell = 6346, bartext = default_bartext, cooldown = 180, resetOnWipe = true  },	-- Priest: Fear Ward
 		{ spell = 73325, bartext = default_bartext, cooldown = 90 },	-- Priest: Leap of Faith (Life Grip)
 		{ spell = 33206, bartext = "%spell on %target", cooldown = 8 }, -- Priest: Pain Suppression Duration (for Healers to see how long cooldown runs)
 		{ spell = 47788, bartext = "%spell on %target", cooldown = 10 },-- Priest: Guardian Spirit (for Healers/Tanks to see how long cooldown runs)
-		{ spell = 62618, bartext = default_bartext, cooldown = 180 },	-- Priest: Power Word: Barrier
-		{ spell = 98008, bartext = default_bartext, cooldown = 180 },	-- Shaman: Spirit Link Totem
+		{ spell = 62618, bartext = default_bartext, cooldown = 180, resetOnWipe = true  },	-- Priest: Power Word: Barrier
+		{ spell = 98008, bartext = default_bartext, cooldown = 180, resetOnWipe = true  },	-- Shaman: Spirit Link Totem
 		{ spell = 20608, bartext = default_bartext, cooldown = 1800 },	-- Shaman: Reincarnation
 		{ spell = 871, bartext = "%spell on %player", cooldown = 12 },	-- Warrior: Shieldwall Duration (for Healers/Tanks to see how long cooldown runs)
 		{ spell = 12975, bartext = "%spell on %player", cooldown = 20 },-- Warrior: Last Stand Duration (for Healers/Tanks to see how long cooldown runs)
-		{ spell = 97462, bartext = default_bartext, cooldown = 180 },	-- Warrior: Rallying Cry CD (for Healers/Tanks to see how long cooldown runs)
-		{ spell = 114203, bartext = default_bartext, cooldown = 180 },	-- Warrior: Demoralizing Banner (for Healers/Tanks to see how long cooldown runs)
-		{ spell = 114207, bartext = default_bartext, cooldown = 180 },	-- Warrior: Skull Banner (for Healers/Tanks to see how long cooldown runs)
+		{ spell = 97462, bartext = default_bartext, cooldown = 180, resetOnWipe = true  },	-- Warrior: Rallying Cry CD (for Healers/Tanks to see how long cooldown runs)
+		{ spell = 114203, bartext = default_bartext, cooldown = 180, resetOnWipe = true  },	-- Warrior: Demoralizing Banner (for Healers/Tanks to see how long cooldown runs)
+		{ spell = 114207, bartext = default_bartext, cooldown = 180, resetOnWipe = true  },	-- Warrior: Skull Banner (for Healers/Tanks to see how long cooldown runs)
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
 		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
 		{ spell = 54711, bartext = default_bartext, cooldown = 300 }, 	-- Scrapbot Construction Kit
