@@ -383,7 +383,7 @@ do
 					local msg =  L.Local_CastMessage:format(bartext)
 					if not lastmsg or lastmsg ~= msg then
 						DBM:AddMsg(msg)
-						astmsg = msg
+						lastmsg = msg
 					end
 				end
 			end
@@ -404,7 +404,11 @@ do
 					SpellBarIndex[bartext] = SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
 					if settings.showlocal then
-						DBM:AddMsg( L.Local_CastMessage:format(bartext) )
+						local msg =  L.Local_CastMessage:format(bartext)
+						if not lastmsg or lastmsg ~= msg then
+							DBM:AddMsg(msg)
+							lastmsg = msg
+						end
 					end
 				end
 			end
