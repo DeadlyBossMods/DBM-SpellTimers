@@ -28,6 +28,10 @@
 
 local Revision = ("$Revision$"):sub(12, -3)
 
+local IsInRaid = IsInRaid
+local IsInInstance = IsInInstance
+local select = select
+
 local default_bartext = "%spell: %player"
 local default_bartextwtarget = "%spell: %player on %target"	-- Added by Florin Patan
 local default_settings = {
