@@ -389,7 +389,7 @@ do
 			end
 
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and settings.show_portal and select(2, ...) == "SPELL_CREATE" then
-			if settings.only_from_raid and not DBM:IsInRaid() then return end
+			if settings.only_from_raid and not IsInRaid() then return end
 
 			local fromplayer = select(5, ...)
 			local toplayer = select(9, ...)		-- Added by Florin Patan
