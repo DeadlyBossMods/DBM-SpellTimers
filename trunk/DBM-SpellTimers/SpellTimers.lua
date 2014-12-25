@@ -365,7 +365,7 @@ do
 			local spellid = select(12, ...)
 
 			-- now we filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
-			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
+			if settings.only_from_raid and not DBM:GetRaidUnitId(fromplayer) then return end
 
 			guikey = SpellIDIndex[spellid]
 			v = (guikey and settings.spells[guikey])
