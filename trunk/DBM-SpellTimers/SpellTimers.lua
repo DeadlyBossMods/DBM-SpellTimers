@@ -343,6 +343,7 @@ do
 
 			rebuildSpellIDIndex()
 		elseif settings.enabled and event == "ENCOUNTER_START" then--Encounter Started
+			clearAllSpellBars() 
 			--Reset all CDs that are >= 3 minutes EXCEPT shaman reincarnate (20608)
 		elseif settings.enabled and event == "ENCOUNTER_END" then--Encounter Ended
 			--Reset all CDs that are > 3 minutes EXCEPT shaman reincarnate (20608)
@@ -350,7 +351,6 @@ do
 		  -- spell cooldowns all reset on entering an arena or bg
 		  clearAllSpellBars() 
 		elseif DBM.InCombat and DBM:InCombat() then--Don't allow spelltimers during raid bosses anymore
-			clearAllSpellBars() 
 			return
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and spellEvents[select(2, ...)] then
 			-- first some exeptions (we don't want to see any skill around the world)
