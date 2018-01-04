@@ -191,7 +191,7 @@ do
 					settings.spells[self.guikey] = settings.spells[self.guikey] or {}
 					if field == "bartext" and settings.spells[self.guikey].spell and settings.spells[self.guikey].spell > 0 then
 						local text = settings.spells[self.guikey][field] or ""
-						local spellinfo = GetSpellInfo(settings.spells[self.guikey].spell)
+						local spellinfo = DBM:GetSpellInfo(settings.spells[self.guikey].spell)
 						if spellinfo == nil then
 							DBM:AddMsg("Illegal SpellID found. Please remove the Spell "..settings.spells[self.guikey].spell.." from your DBM Options GUI (spelltimers)");
 						else
@@ -370,7 +370,8 @@ do
 				if v.spell ~= spellid then
 					print("DBM-SpellTimers Index mismatch error! "..guikey.." "..spellid)
 				end
-				local spellinfo, _, icon = GetSpellInfo(spellid)
+				local spellinfo = select(13, ...)
+				local icon = GetSpellTexture(spellid)
 				spellinfo = spellinfo or "UNKNOWN SPELL"
 				fromplayer = fromplayer or "UNKNOWN SOURCE"
 				toplayer = toplayer or "UNKNOWN TARGET"
@@ -397,7 +398,8 @@ do
 
 			for k,v in pairs(myportals) do
 				if v.spell == spellid then
-					local spellinfo, _, icon = GetSpellInfo(spellid)
+					local spellinfo = select(13, ...)
+					local icon = GetSpellTexture(spellid)
 					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
 					SpellBarIndex[bartext] = SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
