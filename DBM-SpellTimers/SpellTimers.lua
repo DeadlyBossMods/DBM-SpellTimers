@@ -307,8 +307,8 @@ do
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-SpellTimers" then
 			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 			self:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND")
-			--self:RegisterEvent("ENCOUNTER_START")
-			--self:RegisterEvent("ENCOUNTER_END")
+			self:RegisterEvent("ENCOUNTER_START")
+			self:RegisterEvent("ENCOUNTER_END")
 
 			-- Update settings of this Addon
 			settings = DBM_SpellTimers_Settings
@@ -345,13 +345,13 @@ do
 		elseif settings.enabled and event == "ENCOUNTER_START" then--Encounter Started
 			clearAllSpellBars() 
 			--Reset all CDs that are >= 3 minutes EXCEPT shaman reincarnate (20608)
+			self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		elseif settings.enabled and event == "ENCOUNTER_END" then--Encounter Ended
 			--Reset all CDs that are > 3 minutes EXCEPT shaman reincarnate (20608)
+			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		elseif settings.enabled and event == "PLAYER_ENTERING_BATTLEGROUND" then
 		  -- spell cooldowns all reset on entering an arena or bg
-		  clearAllSpellBars() 
-		elseif DBM.InCombat and DBM:InCombat() then--Don't allow spelltimers during raid bosses anymore
-			return
+		  clearAllSpellBars()
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and spellEvents[select(2, ...)] then
 			-- first some exeptions (we don't want to see any skill around the world)
 			if settings.only_from_raid and not IsInRaid() then return end
