@@ -352,54 +352,31 @@ do
 		elseif settings.enabled and event == "PLAYER_ENTERING_BATTLEGROUND" then
 		  -- spell cooldowns all reset on entering an arena or bg
 		  clearAllSpellBars()
-		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and spellEvents[select(2, ...)] then
-			-- first some exeptions (we don't want to see any skill around the world)
-			if settings.only_from_raid and not IsInRaid() then return end
-			if not settings.active_in_pvp and (select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "arena") then return end
+		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" then
+			local _, event, _, _, sourceName, _, _, _, destName, _, _, extraArg1, extraArg2 = CombatLogGetCurrentEventInfo()
+			if spellEvents[event] then
+				-- first some exeptions (we don't want to see any skill around the world)
+				if settings.only_from_raid and not IsInRaid() then return end
+				if not settings.active_in_pvp and (select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "arena") then return end
 
-			local fromplayer = select(5, ...)
-			local toplayer = select(9, ...)		-- Added by Florin Patan
-			local spellid = select(12, ...)
+				local fromplayer = sourceName
+				local toplayer = destName		-- Added by Florin Patan
+				local spellid = extraArg1
 
-			-- now we filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
-			if settings.only_from_raid and not DBM:GetRaidUnitId(fromplayer) then return end
+				-- now we filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
+				if settings.only_from_raid and not DBM:GetRaidUnitId(fromplayer) then return end
 
-			guikey = SpellIDIndex[spellid]
-			v = (guikey and settings.spells[guikey])
-			if v and v.enabled == true then
-				if v.spell ~= spellid then
-					print("DBM-SpellTimers Index mismatch error! "..guikey.." "..spellid)
-				end
-				local spellinfo = select(13, ...)
-				local icon = GetSpellTexture(spellid)
-				spellinfo = spellinfo or "UNKNOWN SPELL"
-				fromplayer = fromplayer or "UNKNOWN SOURCE"
-				toplayer = toplayer or "UNKNOWN TARGET"
-				local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
-				SpellBarIndex[bartext] = SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
-
-				if settings.showlocal then
-					local msg =  L.Local_CastMessage:format(bartext)
-					if not lastmsg or lastmsg ~= msg then
-						DBM:AddMsg(msg)
-						lastmsg = msg
+				guikey = SpellIDIndex[spellid]
+				v = (guikey and settings.spells[guikey])
+				if v and v.enabled == true then
+					if v.spell ~= spellid then
+						print("DBM-SpellTimers Index mismatch error! "..guikey.." "..spellid)
 					end
-				end
-			end
-
-		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" and settings.show_portal and select(2, ...) == "SPELL_CREATE" then
-			if settings.only_from_raid and not IsInRaid() then return end
-
-			local fromplayer = select(5, ...)
-			local toplayer = select(9, ...)		-- Added by Florin Patan
-			local spellid = select(12, ...)
-			
-			if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
-
-			for k,v in pairs(myportals) do
-				if v.spell == spellid then
-					local spellinfo = select(13, ...)
+					local spellinfo = extraArg2
 					local icon = GetSpellTexture(spellid)
+					spellinfo = spellinfo or "UNKNOWN SPELL"
+					fromplayer = fromplayer or "UNKNOWN SOURCE"
+					toplayer = toplayer or "UNKNOWN TARGET"
 					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
 					SpellBarIndex[bartext] = SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
 
@@ -408,6 +385,31 @@ do
 						if not lastmsg or lastmsg ~= msg then
 							DBM:AddMsg(msg)
 							lastmsg = msg
+						end
+					end
+				end
+			elseif settings.show_portal and event == "SPELL_CREATE" then
+				if settings.only_from_raid and not IsInRaid() then return end
+
+				local fromplayer = sourceName
+				local toplayer = destName		-- Added by Florin Patan
+				local spellid = extraArg1
+			
+				if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
+
+				for k,v in pairs(myportals) do
+					if v.spell == spellid then
+						local spellinfo = extraArg2
+						local icon = GetSpellTexture(spellid)
+						local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", fromplayer):gsub("%%target", toplayer)	-- Changed by Florin Patan
+						SpellBarIndex[bartext] = SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
+
+						if settings.showlocal then
+							local msg =  L.Local_CastMessage:format(bartext)
+							if not lastmsg or lastmsg ~= msg then
+								DBM:AddMsg(msg)
+								lastmsg = msg
+							end
 						end
 					end
 				end
