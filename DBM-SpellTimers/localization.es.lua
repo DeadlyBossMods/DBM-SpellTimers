@@ -1,4 +1,4 @@
-if GetLocale() ~= "esES" then
+if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then
 	return
 end
 local L = DBM_SpellsUsed_Translations
