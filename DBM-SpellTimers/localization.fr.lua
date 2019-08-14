@@ -1,8 +1,7 @@
-﻿if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then
+	return
+end
 local L = DBM_SpellsUsed_Translations
-
--- Initial translation by ckeurk
--- Last update: 12/27/2010 (by Sasmira)
 
 L.TabCategory_SpellsUsed	= "incantation/Capacit\195\169 temps de recharge"
 L.AreaGeneral        		= "Options générales"
@@ -18,6 +17,3 @@ L.SpellID					= "ID du sort"
 L.BarText					= "Barre de texte (par défaut: %sort: %joueur)"
 L.Cooldown					= "Temps de recharge"
 L.Error_FillUp				= "merci de remplir tous les champs avant d'ajouter un nouveau"
-
-
-

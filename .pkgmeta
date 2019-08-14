@@ -2,4 +2,4 @@ package-as: DBM-SpellTimers
 enable-nolib-creation: no
 
 move-folders:
-    DBM-SpellTimers/DBM-SpellTimers: DBM-SpellTimers
+	DBM-SpellTimers/DBM-SpellTimers: DBM-SpellTimers

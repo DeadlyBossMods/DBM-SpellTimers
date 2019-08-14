@@ -1,7 +1,7 @@
-﻿if GetLocale() ~= "deDE" then return end
+﻿if GetLocale() ~= "deDE" then
+	return
+end
 local L = DBM_SpellsUsed_Translations
-
-
 
 L.TabCategory_SpellsUsed	= "Zauber/Fähigkeiten-Abklingzeiten"
 L.AreaGeneral				= "Allgemeine Einstellungen für die Abklingzeitenanzeige von Zaubern und Fähigkeiten"
@@ -17,7 +17,3 @@ L.SpellID					= "Zauber ID"
 L.BarText					= "Balkenbeschriftung (z.B.: %spell: %player)"
 L.Cooldown					= "Abklingzeit"
 L.Error_FillUp				= "Bitte fülle erst alle Felder aus, bevor du eine neue Zeile hinzufügst."
-
-
-
-
