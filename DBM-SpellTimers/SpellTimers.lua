@@ -301,6 +301,7 @@ do
 	}
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-SpellTimers" then
+			self:UnregisterEvent("ADDON_LOADED")
 			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 			self:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND")
 			self:RegisterEvent("ENCOUNTER_START")
