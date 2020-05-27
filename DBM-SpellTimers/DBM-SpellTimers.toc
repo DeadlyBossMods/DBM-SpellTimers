@@ -18,6 +18,13 @@
 ## Author: Nitram and Tandanu
 ## URL: http://www.deadlybossmods.com
 ## SavedVariables: DBM_SpellTimers_Settings
+## X-DBM-Mod: 1
+## X-DBM-Mod-Type: OTHER
+## X-DBM-Mod-Category: OTHER
+## X-DBM-Mod-No-Statistics: 1
+## X-DBM-Mod-Name: SpellTimers
+## X-DBM-Mod-MinCoreRevision: 20200524142133
+## X-Curse-Project-ID: 18712
 ## Version: @project-version@
 localization.en.lua
 localization.de.lua
