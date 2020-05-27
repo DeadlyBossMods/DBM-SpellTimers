@@ -103,8 +103,8 @@ do
 		local createnewentry
 		local CurCount = 0
 		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_SpellsUsed, "option")
-		local generalarea = panel:CreateArea(L.AreaGeneral, nil, 150, true)
-		local auraarea = panel:CreateArea(L.AreaAuras, nil, 20, true)
+		local generalarea = panel:CreateArea(L.AreaGeneral, 150)
+		local auraarea = panel:CreateArea(L.AreaAuras, 20)
 
 		local function regenerate()
 			-- FIXME here we can reuse the frames to save some memory (if the player deletes entries)
@@ -239,10 +239,7 @@ do
 
 				getadditionalid:ClearAllPoints()
 				getadditionalid:SetPoint("RIGHT", spellid, "LEFT", -15, 0)
-				area.frame:SetHeight( area.frame:GetHeight() + 35 )
-				area.frame:GetParent():SetHeight( area.frame:GetParent():GetHeight() + 35 )
 
-				panel:SetMyOwnHeight()
 				if DBM_GUI_OptionsFramePanelContainer.displayedFrame and CurCount > 1 then
 					DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 				end
@@ -264,7 +261,6 @@ do
 				end
 			end
 		end
-		panel:SetMyOwnHeight()
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 19)
 end
