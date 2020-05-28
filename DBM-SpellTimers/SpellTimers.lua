@@ -77,15 +77,16 @@ local settings = default_settings
 
 local L = DBM_SpellsUsed_Translations
 
-local SpellBarIndex, SpellIDIndex = {}, {}
+local SpellBarIndex, SpellIDIndex, SpellNameIndex = {}, {}, {}
 
 local type, pairs = type, pairs
 
 local function rebuildSpellIDIndex()
 	SpellIDIndex = {}
-	for k,v in pairs(settings.spells) do
+	for k, v in pairs(settings.spells) do
 		if v.spell then
-			SpellIDIndex[v.spell] = k
+			SpellIDIndex[v.spell]						= k
+			SpellNameIndex[DBM:GetSpellInfo(v.spell)]	= k
 		end
 	end
 end
@@ -267,6 +268,7 @@ end
 
 do
 	local IsInRaid, IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo = IsInRaid, IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo
+	local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
 	local function clearAllSpellBars()
 		for k, _ in pairs(SpellBarIndex) do
@@ -325,10 +327,10 @@ do
 				if settings.only_from_raid and not DBM:GetRaidUnitId(sourceName) then
 					return
 				end
-				local guikey = SpellIDIndex[spellid]
+				local guikey = isClassic and SpellNameIndex[spellinfo] or SpellIDIndex[spellid]
 				local v = guikey and settings.spells[guikey]
 				if v and v.enabled == true then
-					if v.spell ~= spellid then
+					if not isClassic and v.spell ~= spellid then
 						DBM:AddMsg("DBM-SpellTimers Index mismatch error! " .. guikey.." " .. spellid)
 					end
 					local bartext = v.bartext:gsub("%%spell", spellinfo or "UNKNOWN SPELL"):gsub("%%player", sourceName or "UNKNOWN SOURCE"):gsub("%%target", destName or "UNKNOWN TARGET")
@@ -349,7 +351,7 @@ do
 					return
 				end
 				for _, v in pairs(myportals) do
-					if v.spell == spellid then
+					if isClassic and DBM:GetSpellInfo(v.spell) == spellinfo or v.spell == spellid then
 						local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", sourceName):gsub("%%target", destName)
 						SpellBarIndex[bartext] = DBM.Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(spellid), nil, true)
 						if settings.showlocal then
