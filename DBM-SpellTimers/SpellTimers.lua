@@ -315,8 +315,8 @@ do
 		elseif settings.enabled and event == "PLAYER_ENTERING_BATTLEGROUND" then
 			clearAllSpellBars()
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" then
-			local _, event, _, _, sourceName, _, _, _, destName, _, _, spellid, spellinfo = CombatLogGetCurrentEventInfo()
-			if spellEvents[event] then
+			local _, combatEvent, _, _, sourceName, _, _, _, destName, _, _, spellid, spellinfo = CombatLogGetCurrentEventInfo()
+			if spellEvents[combatEvent] then
 				if settings.only_from_raid and not IsInRaid() then
 					return
 				end
