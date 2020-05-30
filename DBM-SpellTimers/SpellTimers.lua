@@ -308,7 +308,7 @@ do
 			addDefaultOptions(settings, default_settings)
 			myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance or settings.portal_horde
 			rebuildSpellIDIndex()
-		elseif settings.enabled and event == "ENCOUNTER_START"
+		elseif settings.enabled and event == "ENCOUNTER_START" then
 			clearAllSpellBars()
 			if settings.disable_encounter then
 				self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
