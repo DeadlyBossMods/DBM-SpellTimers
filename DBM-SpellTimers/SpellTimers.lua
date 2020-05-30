@@ -142,7 +142,7 @@ do
 			showlocal:SetScript("OnShow", function(self) self:SetChecked(settings.showlocal) end)
 			showlocal:SetScript("OnClick", function(self) settings.showlocal = not not self:GetChecked() end)
 
-			local showinraid = generalarea:CreateCheckButton(L.Enable_inRaid, false)
+			local showinraid = generalarea:CreateCheckButton(L.Enable_inRaid, true)
 			showinraid:SetScript("OnShow", function(self) self:SetChecked(settings.only_from_raid) end)
 			showinraid:SetScript("OnClick", function(self) settings.only_from_raid = not not self:GetChecked() end)
 
@@ -150,9 +150,13 @@ do
 			showinpvp:SetScript("OnShow", function(self) self:SetChecked(settings.active_in_pvp) end)
 			showinpvp:SetScript("OnClick", function(self) settings.active_in_pvp = not not self:GetChecked() end)
 
-			local show_portal = generalarea:CreateCheckButton(L.Enable_Portals, false)
+			local show_portal = generalarea:CreateCheckButton(L.Enable_Portals, true)
 			show_portal:SetScript("OnShow", function(self) self:SetChecked(settings.show_portal) end)
 			show_portal:SetScript("OnClick", function(self) settings.show_portal = not not self:GetChecked() end)
+
+			local disableEncounter = generalarea:CreateCheckButton(L.DisableEncounter, true)
+			disableEncounter:SetScript("OnShow", function(self) self:SetChecked(settings.disable_encounter) end)
+			disableEncounter:SetScript("OnClick", function(self) settings.disable_encounter = not not self:GetChecked() end)
 
 			local resetbttn = generalarea:CreateButton(L.Reset, 140, 20)
 			resetbttn:SetPoint("TOPRIGHT", generalarea.frame, "TOPRIGHT", -15, -15)
@@ -299,11 +303,19 @@ do
 			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 			self:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND")
 			self:RegisterEvent("ENCOUNTER_START")
+			self:RegisterEvent("ENCOUNTER_END")
 			settings = DBM_SpellTimers_Settings
 			addDefaultOptions(settings, default_settings)
 			myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance or settings.portal_horde
 			rebuildSpellIDIndex()
-		elseif settings.enabled and (event == "PLAYER_ENTERING_BATTLEGROUND" or event == "ENCOUNTER_START") then
+		elseif settings.enabled and event == "ENCOUNTER_START"
+			clearAllSpellBars()
+			if settings.disable_encounter then
+				self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+			end
+		elseif settings.enabled and event == "ENCOUNTER_END" then
+			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+		elseif settings.enabled and event == "PLAYER_ENTERING_BATTLEGROUND" then
 			clearAllSpellBars()
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" then
 			local _, combatEvent, _, _, sourceName, _, _, _, destName, _, _, spellid, spellinfo = CombatLogGetCurrentEventInfo()
