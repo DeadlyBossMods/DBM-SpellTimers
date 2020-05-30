@@ -134,25 +134,25 @@ do
 		end
 
 		do
-			local enabled = generalarea:CreateCheckButton(L.Enable, true)
+			local enabled = generalarea:CreateCheckButton(L.Enabled, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) settings.enabled = not not self:GetChecked() end)
 
-			local showlocal = generalarea:CreateCheckButton(L.Show_LocalMessage, true)
-			showlocal:SetScript("OnShow", function(self) self:SetChecked(settings.showlocal) end)
-			showlocal:SetScript("OnClick", function(self) settings.showlocal = not not self:GetChecked() end)
+			local showLocal = generalarea:CreateCheckButton(L.ShowLocalMessage, true)
+			showLocal:SetScript("OnShow", function(self) self:SetChecked(settings.showlocal) end)
+			showLocal:SetScript("OnClick", function(self) settings.showlocal = not not self:GetChecked() end)
 
-			local showinraid = generalarea:CreateCheckButton(L.Enable_inRaid, true)
-			showinraid:SetScript("OnShow", function(self) self:SetChecked(settings.only_from_raid) end)
-			showinraid:SetScript("OnClick", function(self) settings.only_from_raid = not not self:GetChecked() end)
+			local onlyFromRaid = generalarea:CreateCheckButton(L.OnlyInRaid, true)
+			onlyFromRaid:SetScript("OnShow", function(self) self:SetChecked(settings.only_from_raid) end)
+			onlyFromRaid:SetScript("OnClick", function(self) settings.only_from_raid = not not self:GetChecked() end)
 
-			local showinpvp = generalarea:CreateCheckButton(L.Enable_inBattleground, false)
-			showinpvp:SetScript("OnShow", function(self) self:SetChecked(settings.active_in_pvp) end)
-			showinpvp:SetScript("OnClick", function(self) settings.active_in_pvp = not not self:GetChecked() end)
+			local showInPVP = generalarea:CreateCheckButton(L.EnableInPVP false)
+			showInPVP:SetScript("OnShow", function(self) self:SetChecked(settings.active_in_pvp) end)
+			showInPVP:SetScript("OnClick", function(self) settings.active_in_pvp = not not self:GetChecked() end)
 
-			local show_portal = generalarea:CreateCheckButton(L.Enable_Portals, true)
-			show_portal:SetScript("OnShow", function(self) self:SetChecked(settings.show_portal) end)
-			show_portal:SetScript("OnClick", function(self) settings.show_portal = not not self:GetChecked() end)
+			local enablePortals = generalarea:CreateCheckButton(L.EnablePortals, true)
+			enablePortals:SetScript("OnShow", function(self) self:SetChecked(settings.show_portal) end)
+			enablePortals:SetScript("OnClick", function(self) settings.show_portal = not not self:GetChecked() end)
 
 			local disableEncounter = generalarea:CreateCheckButton(L.DisableEncounter, true)
 			disableEncounter:SetScript("OnShow", function(self) self:SetChecked(settings.disable_encounter) end)

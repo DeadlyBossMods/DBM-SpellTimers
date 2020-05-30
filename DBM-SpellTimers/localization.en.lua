@@ -1,14 +1,13 @@
-
 DBM_SpellsUsed_Translations = {}
 local L = DBM_SpellsUsed_Translations
 
 L.TabCategory_SpellsUsed	= "Spell/Skill Cooldowns"
 L.AreaGeneral 				= "General Settings for Spell and Skill Cooldowns"
-L.Enable 					= "Enable cooldown timers"
-L.Show_LocalMessage 		= "Show local message on cast"
-L.Enable_inRaid				= "Show cooldowns only from raid members"
-L.Enable_inBattleground		= "Show cooldowns also in battlegrounds"
-L.Enable_Portals			= "Show portal durations"
+L.Enabled 					= "Enable cooldown timers"
+L.ShowLocalMessage	 		= "Show local message on cast"
+L.OnlyFromRaid				= "Show cooldowns only from raid members"
+L.EnableInPVP				= "Show cooldowns also in battlegrounds and arenas"
+L.EnablePortals				= "Show portal durations"
 L.DisableEncounter			= "Disable during encounters"
 L.Reset						= "Reset to defaults"
 L.Local_CastMessage 		= "Detected cast: %s"
