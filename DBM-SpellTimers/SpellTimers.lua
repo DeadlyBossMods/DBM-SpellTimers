@@ -85,8 +85,11 @@ local function rebuildSpellIDIndex()
 	SpellIDIndex = {}
 	for k, v in pairs(settings.spells) do
 		if v.spell then
-			SpellIDIndex[v.spell]						= k
-			SpellNameIndex[DBM:GetSpellInfo(v.spell)]	= k
+			local DBMSpell = DBM:GetSpellInfo(v.spell)
+			if DBMSpell ~= nil then
+				SpellIDIndex[v.spell]		= k
+				SpellNameIndex[DBMSpell]	= k
+			end
 		end
 	end
 end
@@ -118,7 +121,7 @@ do
 				v:SetParent(UIParent)
 				v:ClearAllPoints()
 			end
-			auraarea.frame:SetHeight(20)
+			auraarea:AutoSetDimension()
 			CurCount = 0
 
 			if #settings.spells == 0 then
@@ -139,15 +142,15 @@ do
 			showlocal:SetScript("OnShow", function(self) self:SetChecked(settings.showlocal) end)
 			showlocal:SetScript("OnClick", function(self) settings.showlocal = not not self:GetChecked() end)
 
-			local showinraid = generalarea:CreateCheckButton(L.Enable_inRaid, true)
+			local showinraid = generalarea:CreateCheckButton(L.Enable_inRaid, false)
 			showinraid:SetScript("OnShow", function(self) self:SetChecked(settings.only_from_raid) end)
 			showinraid:SetScript("OnClick", function(self) settings.only_from_raid = not not self:GetChecked() end)
 
-			local showinpvp = generalarea:CreateCheckButton(L.Enable_inBattleground, true)
+			local showinpvp = generalarea:CreateCheckButton(L.Enable_inBattleground, false)
 			showinpvp:SetScript("OnShow", function(self) self:SetChecked(settings.active_in_pvp) end)
 			showinpvp:SetScript("OnClick", function(self) settings.active_in_pvp = not not self:GetChecked() end)
 
-			local show_portal = generalarea:CreateCheckButton(L.Enable_Portals, true)
+			local show_portal = generalarea:CreateCheckButton(L.Enable_Portals, false)
 			show_portal:SetScript("OnShow", function(self) self:SetChecked(settings.show_portal) end)
 			show_portal:SetScript("OnClick", function(self) settings.show_portal = not not self:GetChecked() end)
 
@@ -156,17 +159,9 @@ do
 			resetbttn:SetScript("OnClick", function()
 				table.wipe(DBM_SpellTimers_Settings)
 				addDefaultOptions(settings, default_settings)
-				for _, v in pairs(settings.spells) do
-					if v.enabled == nil then
-						v.enabled = true
-					end
-				end
 				regenerate()
 				DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 			end)
-
-			local version = generalarea:CreateText("r@file-date-integer@", nil, nil, GameFontDisableSmall, "RIGHT")
-			version:SetPoint("BOTTOMRIGHT", generalarea.frame, "BOTTOMRIGHT", -5, 5)
 			generalarea:AutoSetDimension()
 		end
 
@@ -186,6 +181,7 @@ do
 					end
 				end
 			end
+
 			local function onshow_spell(field)
 				return function(self)
 					settings.spells[self.guikey] = settings.spells[self.guikey] or {}
@@ -237,10 +233,21 @@ do
 				enableit:SetScript("OnClick", onchange_spell("enabled"))
 				enableit:SetPoint("LEFT", cooldown, "RIGHT", 5, 0)
 
-				getadditionalid:ClearAllPoints()
-				getadditionalid:SetPoint("RIGHT", spellid, "LEFT", -15, 0)
+				local removeEntry = CreateFrame("Button", "DeleteAdditionalID_Pull", auraarea.frame)
+				removeEntry:SetNormalTexture(130836) -- "Interface\\Buttons\\UI-PlusButton-DOWN"
+				removeEntry:SetPushedTexture(130836) -- "Interface\\Buttons\\UI-PlusButton-DOWN"
+				removeEntry:SetSize(15, 15)
+				removeEntry:SetScript("OnClick", function()
+					table.remove(settings.spells, CurCount)
+					regenerate()
+					DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
+				end)
+				removeEntry:SetPoint("RIGHT", spellid, "LEFT", -15, 0)
 
-				if DBM_GUI_OptionsFramePanelContainer.displayedFrame and CurCount > 1 then
+				getadditionalid:ClearAllPoints()
+				getadditionalid:SetPoint("RIGHT", spellid, "LEFT", -15, -20)
+
+				if DBM_GUI_OptionsFramePanelContainer.displayedFrame == panel.frame and CurCount > 1 then
 					DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 				end
 
@@ -264,7 +271,6 @@ do
 		end
 	end)
 end
-
 
 do
 	local IsInRaid, IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo = IsInRaid, IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo
@@ -293,26 +299,11 @@ do
 			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 			self:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND")
 			self:RegisterEvent("ENCOUNTER_START")
-			self:RegisterEvent("ENCOUNTER_END")
 			settings = DBM_SpellTimers_Settings
 			addDefaultOptions(settings, default_settings)
-			if UnitFactionGroup("player") == "Alliance" then
-				myportals = settings.portal_alliance
-			else
-				myportals = settings.portal_horde
-			end
-			for _, v in pairs(settings.spells) do
-				if v.enabled == nil then
-					v.enabled = true
-				end
-			end
+			myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance or settings.portal_horde
 			rebuildSpellIDIndex()
-		elseif settings.enabled and event == "ENCOUNTER_START" then
-			clearAllSpellBars()
-			self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		elseif settings.enabled and event == "ENCOUNTER_END" then
-			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		elseif settings.enabled and event == "PLAYER_ENTERING_BATTLEGROUND" then
+		elseif settings.enabled and (event == "PLAYER_ENTERING_BATTLEGROUND" or event == "ENCOUNTER_START") then
 			clearAllSpellBars()
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" then
 			local _, combatEvent, _, _, sourceName, _, _, _, destName, _, _, spellid, spellinfo = CombatLogGetCurrentEventInfo()
@@ -329,9 +320,9 @@ do
 				end
 				local guikey = isClassic and SpellNameIndex[spellinfo] or SpellIDIndex[spellid]
 				local v = guikey and settings.spells[guikey]
-				if v and v.enabled == true then
+				if v and v.enabled then
 					if not isClassic and v.spell ~= spellid then
-						DBM:AddMsg("DBM-SpellTimers Index mismatch error! " .. guikey.." " .. spellid)
+						DBM:AddMsg("DBM-SpellTimers Index mismatch error! " .. guikey .. " " .. spellid)
 					end
 					local bartext = v.bartext:gsub("%%spell", spellinfo or "UNKNOWN SPELL"):gsub("%%player", sourceName or "UNKNOWN SOURCE"):gsub("%%target", destName or "UNKNOWN TARGET")
 					SpellBarIndex[bartext] = DBM.Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(spellid), nil, true)
