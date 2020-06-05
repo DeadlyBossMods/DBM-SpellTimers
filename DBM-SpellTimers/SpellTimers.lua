@@ -121,7 +121,6 @@ do
 				v:SetParent(UIParent)
 				v:ClearAllPoints()
 			end
-			auraarea:AutoSetDimension()
 			CurCount = 0
 
 			if #settings.spells == 0 then
@@ -142,7 +141,7 @@ do
 			showLocal:SetScript("OnShow", function(self) self:SetChecked(settings.showlocal) end)
 			showLocal:SetScript("OnClick", function(self) settings.showlocal = not not self:GetChecked() end)
 
-			local onlyFromRaid = generalarea:CreateCheckButton(L.OnlyInRaid, true)
+			local onlyFromRaid = generalarea:CreateCheckButton(L.OnlyFromRaid, true)
 			onlyFromRaid:SetScript("OnShow", function(self) self:SetChecked(settings.only_from_raid) end)
 			onlyFromRaid:SetScript("OnClick", function(self) settings.only_from_raid = not not self:GetChecked() end)
 
@@ -166,7 +165,6 @@ do
 				regenerate()
 				DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 			end)
-			generalarea:AutoSetDimension()
 		end
 
 		do
@@ -238,8 +236,8 @@ do
 				enableit:SetPoint("LEFT", cooldown, "RIGHT", 5, 0)
 
 				local removeEntry = CreateFrame("Button", "DeleteAdditionalID_Pull", auraarea.frame)
-				removeEntry:SetNormalTexture(130836) -- "Interface\\Buttons\\UI-PlusButton-DOWN"
-				removeEntry:SetPushedTexture(130836) -- "Interface\\Buttons\\UI-PlusButton-DOWN"
+				removeEntry:SetNormalTexture(130821) -- "Interface\\Buttons\\UI-MinusButton-DOWN"
+				removeEntry:SetPushedTexture(130820) -- "Interface\\Buttons\\UI-MinusButton-DOWN"
 				removeEntry:SetSize(15, 15)
 				removeEntry:SetScript("OnClick", function()
 					table.remove(settings.spells, CurCount)
@@ -262,7 +260,6 @@ do
 						DBM:AddMsg(L.Error_FillUp)
 					end
 				end)
-				auraarea:AutoSetDimension()
 			end
 
 			if #settings.spells == 0 then
