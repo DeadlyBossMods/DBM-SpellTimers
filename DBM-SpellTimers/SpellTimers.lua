@@ -80,6 +80,7 @@ local L = DBM_SpellsUsed_Translations
 local SpellBarIndex, SpellIDIndex, SpellNameIndex = {}, {}, {}
 
 local type, pairs = type, pairs
+local DBM, Bars = DBM, DBM.Bars
 
 local function rebuildSpellIDIndex()
 	SpellIDIndex = {}
@@ -105,14 +106,14 @@ local function addDefaultOptions(t1, t2)
 end
 
 do
-	local select = select
+	local select, twipe = select, table.wipe
 
 	DBM:RegisterOnGuiLoadCallback(function()
 		local createnewentry
 		local CurCount = 0
 		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_SpellsUsed, "option")
-		local generalarea = panel:CreateArea(L.AreaGeneral, 150)
-		local auraarea = panel:CreateArea(L.AreaAuras, 20)
+		local generalarea = panel:CreateArea(L.AreaGeneral)
+		local auraarea = panel:CreateArea(L.AreaAuras)
 
 		local function regenerate()
 			for i = select("#", auraarea.frame:GetChildren()), 1, -1 do
@@ -160,7 +161,7 @@ do
 			local resetbttn = generalarea:CreateButton(L.Reset, 140, 20)
 			resetbttn:SetPoint("TOPRIGHT", generalarea.frame, "TOPRIGHT", -15, -15)
 			resetbttn:SetScript("OnClick", function()
-				table.wipe(DBM_SpellTimers_Settings)
+				twipe(DBM_SpellTimers_Settings)
 				addDefaultOptions(settings, default_settings)
 				regenerate()
 				DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
@@ -279,7 +280,7 @@ do
 
 	local function clearAllSpellBars()
 		for k, _ in pairs(SpellBarIndex) do
-			DBM.Bars:CancelBar(k)
+			Bars:CancelBar(k)
 			SpellBarIndex[k] = nil
 		end
 	end
@@ -334,7 +335,7 @@ do
 						DBM:AddMsg("DBM-SpellTimers Index mismatch error! " .. guikey .. " " .. spellid)
 					end
 					local bartext = v.bartext:gsub("%%spell", spellinfo or "UNKNOWN SPELL"):gsub("%%player", sourceName or "UNKNOWN SOURCE"):gsub("%%target", destName or "UNKNOWN TARGET")
-					SpellBarIndex[bartext] = DBM.Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(spellid), nil, true)
+					SpellBarIndex[bartext] = Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(spellid), nil, true)
 					if settings.showlocal then
 						local msg = L.Local_CastMessage:format(bartext)
 						if not lastmsg or lastmsg ~= msg then
@@ -353,7 +354,7 @@ do
 				for _, v in pairs(myportals) do
 					if isClassic and DBM:GetSpellInfo(v.spell) == spellinfo or v.spell == spellid then
 						local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", sourceName):gsub("%%target", destName)
-						SpellBarIndex[bartext] = DBM.Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(spellid), nil, true)
+						SpellBarIndex[bartext] = Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(spellid), nil, true)
 						if settings.showlocal then
 							local msg = L.Local_CastMessage:format(bartext)
 							if not lastmsg or lastmsg ~= msg then
