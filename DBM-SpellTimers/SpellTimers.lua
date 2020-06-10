@@ -106,12 +106,12 @@ local function addDefaultOptions(t1, t2)
 end
 
 do
-	local select, twipe = select, table.wipe
+	local select = select
 
 	DBM:RegisterOnGuiLoadCallback(function()
 		local createnewentry
 		local CurCount = 0
-		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_SpellsUsed, "option")
+		local panel = _G["DBM_GUI"]:CreateNewPanel(L.TabCategory_SpellsUsed, "option")
 		local generalarea = panel:CreateArea(L.AreaGeneral)
 		local auraarea = panel:CreateArea(L.AreaAuras)
 
@@ -127,13 +127,15 @@ do
 			if #settings.spells == 0 then
 				createnewentry()
 			else
-				for i = 1, #settings.spells do
+				for _, _ in pairs(settings.spells) do
 					createnewentry()
 				end
 			end
 		end
 
 		do
+			local twipe = table.wipe
+
 			local enabled = generalarea:CreateCheckButton(L.Enabled, true)
 			enabled:SetScript("OnShow", function(self) self:SetChecked(settings.enabled) end)
 			enabled:SetScript("OnClick", function(self) settings.enabled = not not self:GetChecked() end)
@@ -164,11 +166,13 @@ do
 				twipe(DBM_SpellTimers_Settings)
 				addDefaultOptions(settings, default_settings)
 				regenerate()
-				DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
+				_G["DBM_GUI_OptionsFrame"]:DisplayFrame(panel.frame)
 			end)
 		end
 
 		do
+			local tremove = table.remove
+
 			local function onchange_spell(field)
 				return function(self)
 					settings.spells[self.guikey] = settings.spells[self.guikey] or {}
@@ -241,17 +245,17 @@ do
 				removeEntry:SetPushedTexture(130820) -- "Interface\\Buttons\\UI-MinusButton-DOWN"
 				removeEntry:SetSize(15, 15)
 				removeEntry:SetScript("OnClick", function()
-					table.remove(settings.spells, CurCount)
+					tremove(settings.spells, CurCount)
 					regenerate()
-					DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
+					_G["DBM_GUI_OptionsFrame"]:DisplayFrame(panel.frame)
 				end)
 				removeEntry:SetPoint("RIGHT", spellid, "LEFT", -15, 0)
 
 				getadditionalid:ClearAllPoints()
 				getadditionalid:SetPoint("RIGHT", spellid, "LEFT", -15, -20)
 
-				if DBM_GUI_OptionsFramePanelContainer.displayedFrame == panel.frame and CurCount > 1 then
-					DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
+				if _G["DBM_GUI"].displayedFrame == panel.frame and CurCount > 1 then
+					_G["DBM_GUI_OptionsFrame"]:DisplayFrame(panel.frame)
 				end
 
 				getadditionalid:SetScript("OnClick", function()
