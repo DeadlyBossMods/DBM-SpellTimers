@@ -146,7 +146,7 @@ do
 			onlyFromRaid:SetScript("OnShow", function(self) self:SetChecked(settings.only_from_raid) end)
 			onlyFromRaid:SetScript("OnClick", function(self) settings.only_from_raid = not not self:GetChecked() end)
 
-			local showInPVP = generalarea:CreateCheckButton(L.EnableInPVP, false)
+			local showInPVP = generalarea:CreateCheckButton(L.EnableInPVP, true)
 			showInPVP:SetScript("OnShow", function(self) self:SetChecked(settings.active_in_pvp) end)
 			showInPVP:SetScript("OnClick", function(self) settings.active_in_pvp = not not self:GetChecked() end)
 
