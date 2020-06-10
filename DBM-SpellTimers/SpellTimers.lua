@@ -254,7 +254,7 @@ do
 				getadditionalid:ClearAllPoints()
 				getadditionalid:SetPoint("RIGHT", spellid, "LEFT", -15, -20)
 
-				if _G["DBM_GUI"].displayedFrame == panel.frame and CurCount > 1 then
+				if _G["DBM_GUI"].currentViewing == panel.frame and CurCount > 1 then
 					_G["DBM_GUI_OptionsFrame"]:DisplayFrame(panel.frame)
 				end
 
