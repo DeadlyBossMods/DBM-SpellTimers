@@ -10,6 +10,8 @@ Description
 -----------
 DBM-SpellTimers is a small but powerful addon that uses DBM timers to show spell cooldowns from raid members. It is fully configurable through a simple GUI so you can easily add new spells.
 
+**This is NOT to be confused with boss ability cooldowns. Those are built into Deadly Boss Mods and do not require this plugin. Only install this plugin if you want to track PLAYER cooldowns.
+
 It provides you with bars for typical raid cooldowns like heroism, shieldwall, battlerezz or anything else you might need. The GUI supports custom definition for your own wishes.
 
 Requirements
