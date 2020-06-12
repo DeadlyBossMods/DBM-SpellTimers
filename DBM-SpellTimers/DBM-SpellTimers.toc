@@ -21,7 +21,7 @@
 ## DefaultState: enabled
 ## Author: Nitram and Tandanu
 ## URL: http://www.deadlybossmods.com
-## SavedVariables: DBMSpellTimers_AllSavedVars
+## SavedVariables: DBM_SpellTimers_Settings
 ## X-Curse-Project-ID: 18712
 ## Version: @project-version@
 
