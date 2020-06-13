@@ -280,7 +280,7 @@ do
 end
 
 do
-	local IsInRaid, IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo = IsInRaid, IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo
+	local IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo = IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo
 	local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
 	local function clearAllSpellBars()
