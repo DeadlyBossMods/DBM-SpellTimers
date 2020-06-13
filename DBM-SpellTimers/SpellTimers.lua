@@ -349,20 +349,20 @@ do
 						end
 					end
 				end
-			end
-		elseif settings.show_portal and event == "SPELL_CREATE" then
-			if settings.only_from_raid and not DBM:GetRaidUnitId(sourceName) then
-				return
-			end
-			for _, v in pairs(myportals) do
-				if isClassic and DBM:GetSpellInfo(v.spell) == spellinfo or v.spell == spellid then
-					local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", sourceName):gsub("%%target", destName)
-					SpellBarIndex[bartext] = Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(spellid), nil, true)
-					if settings.showlocal then
-						local msg = L.Local_CastMessage:format(bartext)
-						if not lastmsg or lastmsg ~= msg then
-							DBM:AddMsg(msg)
-							lastmsg = msg
+			elseif settings.show_portal and combatEvent == "SPELL_CREATE" then
+				if settings.only_from_raid and not DBM:GetRaidUnitId(sourceName) then
+					return
+				end
+				for _, v in pairs(myportals) do
+					if isClassic and DBM:GetSpellInfo(v.spell) == spellinfo or v.spell == spellid then
+						local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", sourceName):gsub("%%target", destName)
+						SpellBarIndex[bartext] = Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(spellid), nil, true)
+						if settings.showlocal then
+							local msg = L.Local_CastMessage:format(bartext)
+							if not lastmsg or lastmsg ~= msg then
+								DBM:AddMsg(msg)
+								lastmsg = msg
+							end
 						end
 					end
 				end
