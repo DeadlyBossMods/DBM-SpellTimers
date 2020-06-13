@@ -28,12 +28,13 @@
 
 local default_bartext = "%spell: %player"
 local default_settings = {
-	enabled			= true,
-	showlocal		= true,
-	only_from_raid	= true,
-	active_in_pvp	= true,
-	own_bargroup	= false,
-	show_portal		= true,
+	enabled				= true,
+	showlocal			= true,
+	only_from_raid		= true,
+	active_in_pvp		= true,
+	own_bargroup		= false,
+	show_portal			= true,
+	disable_encounter	= true,
 	spells			= {
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
 		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
@@ -290,6 +291,7 @@ do
 	end
 
 	local lastmsg, myportals = "", {}
+	local eventsUnregistered = false
 	local mainframe = CreateFrame("frame", "DBM_SpellTimers", UIParent)
 	local spellEvents = {
 		["SPELL_CAST_SUCCESS"]	= true,
@@ -310,21 +312,20 @@ do
 			addDefaultOptions(settings, default_settings)
 			myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance or settings.portal_horde
 			rebuildSpellIDIndex()
-		elseif settings.enabled and event == "ENCOUNTER_START" then
-			clearAllSpellBars()
+		elseif settings.enabled and event == "ENCOUNTER_START" and not eventsUnregistered then
 			if settings.disable_encounter then
+				clearAllSpellBars()
 				self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+				eventsUnregistered = true
 			end
-		elseif settings.enabled and event == "ENCOUNTER_END" then
+		elseif settings.enabled and event == "ENCOUNTER_END" and eventsUnregistered then
 			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+			eventsUnregistered = false
 		elseif settings.enabled and event == "PLAYER_ENTERING_BATTLEGROUND" then
 			clearAllSpellBars()
 		elseif settings.enabled and event == "COMBAT_LOG_EVENT_UNFILTERED" then
 			local _, combatEvent, _, _, sourceName, _, _, _, destName, _, _, spellid, spellinfo = CombatLogGetCurrentEventInfo()
 			if spellEvents[combatEvent] then
-				if settings.only_from_raid and not IsInRaid() then
-					return
-				end
 				local _, instanceType = IsInInstance()
 				if not settings.active_in_pvp and (instanceType == "pvp" or instanceType == "arena") then
 					return
@@ -349,10 +350,7 @@ do
 					end
 				end
 			elseif settings.show_portal and event == "SPELL_CREATE" then
-				if settings.only_from_raid and not IsInRaid() then
-					return
-				end
-				if settings.only_from_raid and DBM:GetRaidUnitId(sourceName) == "none" then
+				if settings.only_from_raid and not DBM:GetRaidUnitId(sourceName) then
 					return
 				end
 				for _, v in pairs(myportals) do
