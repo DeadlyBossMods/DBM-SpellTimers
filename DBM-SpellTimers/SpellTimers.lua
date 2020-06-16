@@ -81,7 +81,7 @@ local default_settings = {
 		{ spell = 176244, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Warspear
 		{ spell = 224873, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dalaran - Broken Isles
 		{ spell = 281402, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dazar'alor
-	}
+	},
 	portal_horde_classic	= {
 		{ spell = 11417, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Orgrimmar
 		{ spell = 11418, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Undercity
