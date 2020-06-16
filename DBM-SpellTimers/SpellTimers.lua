@@ -37,9 +37,13 @@ local default_settings = {
 	disable_encounter	= true,
 	spells			= {
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
-		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
-		{ spell = 54711, bartext = default_bartext, cooldown = 300 }, 	-- Scrapbot Construction Kit
-		{ spell = 67826, bartext = default_bartext, cooldown = 600 }, 	-- Jeeves
+		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G (added in BC)
+		{ spell = 54711, bartext = default_bartext, cooldown = 300 }, 	-- Scrapbot Construction Kit (added in Wrath)
+		{ spell = 67826, bartext = default_bartext, cooldown = 600 }, 	-- Jeeves (Also Added in Wrath)
+
+	},
+	spellsClassic	= {
+		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
 
 	},
 	portal_alliance	= {
@@ -57,6 +61,12 @@ local default_settings = {
 		{ spell = 224873, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dalaran - Broken Isles
 		{ spell = 281400, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Boralus
 	},
+	portal_alliance_classic	= {
+		{ spell = 10059, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Stormwind
+		{ spell = 11416, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Ironforge
+		{ spell = 11419, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Darnassus
+		{ spell = 32266, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Exodar
+	},
 	portal_horde	= {
 		{ spell = 11417, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Orgrimmar
 		{ spell = 11418, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Undercity
@@ -72,6 +82,12 @@ local default_settings = {
 		{ spell = 224873, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dalaran - Broken Isles
 		{ spell = 281402, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dazar'alor
 	}
+	portal_horde_classic	= {
+		{ spell = 11417, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Orgrimmar
+		{ spell = 11418, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Undercity
+		{ spell = 11420, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Thunder Bluff
+		{ spell = 32667, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Silvermoon
+	}
 }
 DBM_SpellTimers_Settings = {}
 local settings = default_settings
@@ -82,10 +98,12 @@ local SpellBarIndex, SpellIDIndex, SpellNameIndex = {}, {}, {}
 
 local type, pairs = type, pairs
 local DBM, Bars = DBM, DBM.Bars
+local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
 local function rebuildSpellIDIndex()
 	SpellIDIndex = {}
-	for k, v in pairs(settings.spells) do
+	local usedTable = isClassic and settings.spellsClassic or settings.spells
+	for k, v in pairs(usedTable) do
 		if v.spell then
 			local DBMSpell = DBM:GetSpellInfo(v.spell)
 			if DBMSpell ~= nil then
@@ -281,7 +299,6 @@ end
 
 do
 	local IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo = IsInInstance, UnitFactionGroup, GetSpellTexture, CombatLogGetCurrentEventInfo
-	local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
 	local function clearAllSpellBars()
 		for k, _ in pairs(SpellBarIndex) do
@@ -310,7 +327,11 @@ do
 			self:RegisterEvent("ENCOUNTER_END")
 			settings = DBM_SpellTimers_Settings
 			addDefaultOptions(settings, default_settings)
-			myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance or settings.portal_horde
+			if isClassic then
+				myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance_classic or settings.portal_horde_classic
+			else
+				myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance or settings.portal_horde
+			end
 			rebuildSpellIDIndex()
 		elseif settings.enabled and event == "ENCOUNTER_START" and not eventsUnregistered then
 			if settings.disable_encounter then
