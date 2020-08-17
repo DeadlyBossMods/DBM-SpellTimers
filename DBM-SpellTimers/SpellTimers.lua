@@ -25,6 +25,7 @@
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
+local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
 local default_bartext = "%spell: %player"
 local default_settings = {
@@ -34,19 +35,33 @@ local default_settings = {
 	active_in_pvp		= true,
 	own_bargroup		= false,
 	show_portal			= true,
-	disable_encounter	= true,
-	spells			= {
-		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
-		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G (added in BC)
-		{ spell = 54711, bartext = default_bartext, cooldown = 300 }, 	-- Scrapbot Construction Kit (added in Wrath)
-		{ spell = 67826, bartext = default_bartext, cooldown = 600 }, 	-- Jeeves (Also Added in Wrath)
+	disable_encounter	= true
+}
 
-	},
-	spellsClassic	= {
+if isClassic then
+	default_settings.spells				= {
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
-
-	},
-	portal_alliance	= {
+	}
+	default_settings.portal_alliance	= {
+		{ spell = 10059, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Stormwind
+		{ spell = 11416, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Ironforge
+		{ spell = 11419, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Darnassus
+		{ spell = 32266, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Exodar
+	}
+	default_settings.portal_horde		= {
+		{ spell = 11417, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Orgrimmar
+		{ spell = 11418, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Undercity
+		{ spell = 11420, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Thunder Bluff
+		{ spell = 32667, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Silvermoon
+	}
+else
+	default_settings.spells				= {
+		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
+		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
+		{ spell = 54711, bartext = default_bartext, cooldown = 300 }, 	-- Scrapbot Construction Kit
+		{ spell = 67826, bartext = default_bartext, cooldown = 600 }, 	-- Jeeves
+	}
+	default_settings.portal_alliance	= {
 		{ spell = 10059, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Stormwind
 		{ spell = 11416, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Ironforge
 		{ spell = 11419, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Darnassus
@@ -60,14 +75,8 @@ local default_settings = {
 		{ spell = 176246, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Stormshield
 		{ spell = 224873, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dalaran - Broken Isles
 		{ spell = 281400, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Boralus
-	},
-	portal_alliance_classic	= {
-		{ spell = 10059, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Stormwind
-		{ spell = 11416, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Ironforge
-		{ spell = 11419, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Darnassus
-		{ spell = 32266, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Exodar
-	},
-	portal_horde	= {
+	}
+	default_settings.portal_horde		= {
 		{ spell = 11417, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Orgrimmar
 		{ spell = 11418, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Undercity
 		{ spell = 11420, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Thunder Bluff
@@ -81,14 +90,9 @@ local default_settings = {
 		{ spell = 176244, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Warspear
 		{ spell = 224873, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dalaran - Broken Isles
 		{ spell = 281402, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Dazar'alor
-	},
-	portal_horde_classic	= {
-		{ spell = 11417, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Orgrimmar
-		{ spell = 11418, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Undercity
-		{ spell = 11420, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Thunder Bluff
-		{ spell = 32667, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Silvermoon
 	}
-}
+end
+
 DBM_SpellTimers_Settings = {}
 local settings = default_settings
 
@@ -98,15 +102,15 @@ local SpellBarIndex, SpellIDIndex, SpellNameIndex = {}, {}, {}
 
 local type, pairs = type, pairs
 local DBM, Bars = DBM, DBM.Bars
-local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
 local function rebuildSpellIDIndex()
 	SpellIDIndex = {}
-	local usedTable = isClassic and settings.spellsClassic or settings.spells
-	for k, v in pairs(usedTable) do
+	for k, v in pairs(settings.spells) do
 		if v.spell then
 			local DBMSpell = DBM:GetSpellInfo(v.spell)
-			if DBMSpell ~= nil then
+			if DBMSpell == nil then
+				settings.spells[k] = nil -- Removes any invalid spells on load.
+			else
 				SpellIDIndex[v.spell]		= k
 				SpellNameIndex[DBMSpell]	= k
 			end
@@ -219,7 +223,7 @@ do
 							self:SetText(string.gsub(settings.spells[self.guikey][field] or "", "%%spell", spellinfo))
 						end
 					elseif field == "enabled" then
-						self:SetChecked(settings.spells[self.guikey].enabled)
+						self:SetChecked(settings.spells[self.guikey].enabled or true)
 					else
 						self:SetText(settings.spells[self.guikey][field] or "")
 					end
@@ -260,11 +264,12 @@ do
 				enableit:SetPoint("LEFT", cooldown, "RIGHT", 5, 0)
 
 				local removeEntry = CreateFrame("Button", "DeleteAdditionalID_Pull", auraarea.frame)
+				removeEntry.guikey = CurCount
 				removeEntry:SetNormalTexture(130821) -- "Interface\\Buttons\\UI-MinusButton-DOWN"
 				removeEntry:SetPushedTexture(130820) -- "Interface\\Buttons\\UI-MinusButton-DOWN"
 				removeEntry:SetSize(15, 15)
-				removeEntry:SetScript("OnClick", function()
-					tremove(settings.spells, CurCount)
+				removeEntry:SetScript("OnClick", function(self)
+					tremove(settings.spells, self.guikey)
 					regenerate()
 					_G["DBM_GUI_OptionsFrame"]:DisplayFrame(panel.frame)
 				end)
@@ -327,11 +332,7 @@ do
 			self:RegisterEvent("ENCOUNTER_END")
 			settings = DBM_SpellTimers_Settings
 			addDefaultOptions(settings, default_settings)
-			if isClassic then
-				myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance_classic or settings.portal_horde_classic
-			else
-				myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance or settings.portal_horde
-			end
+			myportals = UnitFactionGroup("player") == "Alliance" and settings.portal_alliance or settings.portal_horde
 			rebuildSpellIDIndex()
 		elseif settings.enabled and event == "ENCOUNTER_START" and not eventsUnregistered then
 			if settings.disable_encounter then
