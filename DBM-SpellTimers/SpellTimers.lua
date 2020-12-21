@@ -225,7 +225,7 @@ do
 							self:SetText(gsub(settings.spells[self.guikey][field] or "", "%%spell", spellinfo))
 						end
 					elseif field == "enabled" then
-						self:SetChecked(settings.spells[self.guikey].enabled or true)
+						self:SetChecked(settings.spells[self.guikey].enabled or false)
 					else
 						self:SetText(settings.spells[self.guikey][field] or "")
 					end
