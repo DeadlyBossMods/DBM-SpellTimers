@@ -39,7 +39,7 @@ local default_settings = {
 	disable_encounter	= true
 }
 
-if isClassic then
+if isClassic and not isTBC then
 	default_settings.spells				= {
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
 	}
