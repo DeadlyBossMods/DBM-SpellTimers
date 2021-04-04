@@ -26,6 +26,7 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+local isTBC = DBM:GetTOC() == 20501 or false--TODO, fixme when TBC WOW_PROJECT_ID added
 
 local default_bartext = "%spell: %player"
 local default_settings = {
@@ -53,6 +54,24 @@ if isClassic then
 		{ spell = 11418, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Undercity
 		{ spell = 11420, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Thunder Bluff
 		{ spell = 32667, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Silvermoon
+	}
+elseif isTBC then
+	default_settings.spells				= {
+		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
+	}
+	default_settings.portal_alliance	= {
+		{ spell = 10059, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Stormwind
+		{ spell = 11416, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Ironforge
+		{ spell = 11419, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Darnassus
+		{ spell = 32266, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Exodar
+		{ spell = 33691, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Shattrath
+	}
+	default_settings.portal_horde		= {
+		{ spell = 11417, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Orgrimmar
+		{ spell = 11418, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Undercity
+		{ spell = 11420, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Thunder Bluff
+		{ spell = 32667, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Silvermoon
+		{ spell = 35717, bartext = default_bartext, cooldown = 60 }, 	-- Portal: Shattrath
 	}
 else
 	default_settings.spells				= {
