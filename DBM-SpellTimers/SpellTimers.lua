@@ -387,7 +387,7 @@ do
 						DBM:AddMsg("DBM-SpellTimers Index mismatch error! " .. guikey .. " " .. spellid)
 					end
 					local bartext = v.bartext:gsub("%%spell", spellinfo or "UNKNOWN SPELL"):gsub("%%player", sourceName or "UNKNOWN SOURCE"):gsub("%%target", destName or "UNKNOWN TARGET")
-					SpellBarIndex[bartext] = Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(isClassic and v.spell or spellid), nil, true)
+					SpellBarIndex[bartext] = DBT::CreateBar(v.cooldown, bartext, GetSpellTexture(isClassic and v.spell or spellid), nil, true)
 					if settings.showlocal then
 						local msg = L.Local_CastMessage:format(bartext)
 						if not lastmsg or lastmsg ~= msg then
@@ -403,7 +403,7 @@ do
 				for _, v in pairs(myportals) do
 					if isClassic and DBM:GetSpellInfo(v.spell) == spellinfo or v.spell == spellid then
 						local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", sourceName):gsub("%%target", destName)
-						SpellBarIndex[bartext] = Bars:CreateBar(v.cooldown, bartext, GetSpellTexture(isClassic and v.spell or spellid), nil, true)
+						SpellBarIndex[bartext] = DBT::CreateBar(v.cooldown, bartext, GetSpellTexture(isClassic and v.spell or spellid), nil, true)
 						if settings.showlocal then
 							local msg = L.Local_CastMessage:format(bartext)
 							if not lastmsg or lastmsg ~= msg then
