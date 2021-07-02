@@ -10,6 +10,7 @@ globals = {
 	"DBM",
 	"DBM_SpellTimers_Settings",
 	"DBM_SpellsUsed_Translations",
+	"DBT",
 
 	-- WoW
 	"UIParent",
