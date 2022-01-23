@@ -30,5 +30,6 @@ localization.kr.lua
 localization.es.lua
 localization.fr.lua
 localization.it.lua
+localization.ru.lua
 
 SpellTimers.lua
