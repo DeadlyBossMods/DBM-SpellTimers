@@ -21,6 +21,7 @@
 ## Author: Nitram and Tandanu and QartemisT
 ## URL: http://www.deadlybossmods.com
 ## SavedVariables: DBM_SpellTimers_Settings
+## IconTexture: Interface\AddOns\DBM-Core\textures\dbm_airhorn
 ## X-Curse-Project-ID: 18712
 ## Version: @project-version@
 
