@@ -153,7 +153,7 @@ do
 	DBM:RegisterOnGuiLoadCallback(function()
 		local createnewentry
 		local CurCount = 0
-		local panel = _G["DBM_GUI"]:CreateNewPanel(L.TabCategory_SpellsUsed, "OTHER")
+		local panel = _G["DBM_GUI"]:CreateNewPanel(L.TabCategory_SpellsUsed, "option")
 		local generalarea = panel:CreateArea(L.AreaGeneral)
 		local auraarea = panel:CreateArea(L.AreaAuras)
 
