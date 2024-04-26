@@ -127,7 +127,7 @@ local function rebuildSpellIDIndex()
 	SpellIDIndex = {}
 	for k, v in pairs(settings.spells) do
 		if v.spell then
-			local DBMSpell = DBM:GetSpellInfo(v.spell)
+			local DBMSpell = DBM:GetSpellName(v.spell)
 			if DBMSpell == nil then
 				settings.spells[k] = nil -- Removes any invalid spells on load.
 			else
@@ -239,7 +239,7 @@ do
 				return function(self)
 					settings.spells[self.guikey] = settings.spells[self.guikey] or {}
 					if field == "bartext" and settings.spells[self.guikey].spell and settings.spells[self.guikey].spell > 0 then
-						local spellinfo = DBM:GetSpellInfo(settings.spells[self.guikey].spell)
+						local spellinfo = DBM:GetSpellName(settings.spells[self.guikey].spell)
 						if spellinfo == nil then
 							DBM:AddMsg("Illegal SpellID found. Please remove the Spell " .. settings.spells[self.guikey].spell .. " from your DBM Options GUI (spelltimers)");
 						else
@@ -403,7 +403,7 @@ do
 					return
 				end
 				for _, v in pairs(myportals) do
-					if isClassic and DBM:GetSpellInfo(v.spell) == spellinfo or v.spell == spellid then
+					if isClassic and DBM:GetSpellName(v.spell) == spellinfo or v.spell == spellid then
 						local bartext = v.bartext:gsub("%%spell", spellinfo):gsub("%%player", sourceName):gsub("%%target", destName)
 						SpellBarIndex[bartext] = DBT:CreateBar(v.cooldown, bartext, DBM:GetSpellTexture(isClassic and v.spell or spellid), nil, true)
 						if settings.showlocal then
