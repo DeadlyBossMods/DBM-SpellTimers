@@ -2,6 +2,7 @@
 ## Interface-Classic: 11404
 ## Interface-Wrath: 30403
 ## Interface-Cata: 40402
+## Interface-Mists: 50500
 ## Category: DBM
 
 ## Title:|cffffe00a<|r|cffff7d0aDBM Extra|r|cffffe00a>|r |cff69ccf0Spell Timers|r
