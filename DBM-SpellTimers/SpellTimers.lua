@@ -26,8 +26,8 @@
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 --
-local isClassic = WOW_PROJECT_ID == (WOW_PROJECT_CLASSIC or 2)
-local isTBC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
+local isClassic = DBM:IsVanillaEra()
+local isTBC = DBM:IsTBC()
 
 local default_bartext = "%spell: %player"
 local default_settings = {
