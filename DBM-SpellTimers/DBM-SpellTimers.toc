@@ -1,5 +1,5 @@
-## AllowLoadGameType: vanilla, tbc, wrath, mists
-## Interface: 11509, 20504, 30405, 38002, 50504
+## AllowLoadGameType: vanilla, tbc, wrath, cata, mists
+## Interface: 11509, 20504, 30405, 38002, 40402, 50504
 ## Category: DBM
 
 ## Title:|cffffe00a<|r|cffff7d0aDBM Extra|r|cffffe00a>|r |cff69ccf0Spell Timers|r
