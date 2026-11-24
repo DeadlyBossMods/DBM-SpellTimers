@@ -1,3 +1,4 @@
+-- 泰坦重铸时光服-时光2-法师-旺仔芒果/椰奶冻-2026.11.13--
 if GetLocale() ~= "zhCN" then
 	return
 end
@@ -10,6 +11,7 @@ L.ShowLocalMessage	 		= "显示本地提示"
 L.OnlyFromRaid				= "只显示团队成员的冷却信息"
 L.EnableInPVP				= "战场中同样启用"
 L.EnablePortals				= "显示时间"
+L.DisableEncounter			= "首领战斗中禁用"
 L.Reset						= "重置设置"
 L.Local_CastMessage 		= "检测到施法: %s"
 L.AreaAuras 				= "技能设置"
